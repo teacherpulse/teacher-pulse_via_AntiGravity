@@ -82,7 +82,9 @@ export const columns: ColumnDef<Profile>[] = [
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
                         <DropdownMenuItem>View Performance</DropdownMenuItem>
-                        <DropdownMenuItem>New Evaluation</DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                            <a href={`/dashboard/evaluations/new?teacherId=${teacher.id}`}>New Evaluation</a>
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )
