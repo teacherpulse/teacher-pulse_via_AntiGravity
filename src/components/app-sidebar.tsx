@@ -44,6 +44,11 @@ const data = {
             icon: BookOpen,
         },
         {
+            title: "Vidya Pulse (Students)",
+            url: "/dashboard/students",
+            icon: Users,
+        },
+        {
             title: "My Growth",
             url: "/dashboard/growth",
             icon: LineChart,

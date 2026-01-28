@@ -186,5 +186,89 @@ export const CRITERIA: { [key: string]: ModuleCriteria } = {
                 description: 'Conflict resolution, alignment with management, ethics. From Divider (1) to Institutional Pillar (5).'
             },
         ]
+    },
+        ]
+    },
+
+// Module 6: Vidya Pulse (Student Diagnostics)
+module_vidya_pulse: {
+    variants: {
+        // Age 3-6: Foundational Years
+        age_3_6: [
+            { id: 'vp_36_1', label: '1. Emotional Regulation', max_score: 5, description: 'Reacts to fun/frustration, soothes self, mood stability.' },
+            { id: 'vp_36_2', label: '2. Separation Anxiety', max_score: 5, description: 'Drop-off reaction, asking for parents, nap time behavior.' },
+            { id: 'vp_36_3', label: '3. Social Skills', max_score: 5, description: 'Sharing, conflict resolution, initiating interaction.' },
+            { id: 'vp_36_4', label: '4. Attention Span', max_score: 5, description: 'Circle time focus, following multi-step instructions.' },
+        ],
+            // Age 6-10: Formative Primary Years
+            age_6_10: [
+                { id: 'vp_610_1', label: '1. Academic Habits', max_score: 5, description: 'Homework completion, bag organization, handwriting.' },
+                { id: 'vp_610_2', label: '2. Defiance & Behavior', max_score: 5, description: 'Response to correction, language used, aggression.' },
+                { id: 'vp_610_3', label: '3. Digital Focus', max_score: 5, description: 'Screen dependency, attention span without screens.' },
+                { id: 'vp_610_4', label: '4. Peer Dynamics', max_score: 5, description: 'Conflict resolution, empathy, response to teasing.' },
+                { id: 'vp_610_5', label: '5. Self-Esteem', max_score: 5, description: 'Reaction to praise/failure, body language, "I can" attitude.' },
+            ],
+                // Age 11-16: Adolescence & Identity
+                age_11_16: [
+                    { id: 'vp_1116_1', label: '1. Academic Pressure', max_score: 5, description: 'Exam stress, integrity (AI/Plagiarism), future outlook.' },
+                    { id: 'vp_1116_2', label: '2. Cyber-Safety', max_score: 5, description: 'Online conflict, privacy settings, screen balance.' },
+                    { id: 'vp_1116_3', label: '3. Risk-Taking', max_score: 5, description: 'Substance suspicion, reckless behavior, peer influence.' },
+                    { id: 'vp_1116_4', label: '4. Mental Health', max_score: 5, description: 'Mood swings, coping mechanisms, body image.' },
+                    { id: 'vp_1116_5', label: '5. Defiance & Authority', max_score: 5, description: 'Response to rules, communication with adults, accountability.' },
+                ]
+            ]
     }
+},
+
+// Module 7: Parent Pulse (Parent Engagement)
+module_parent_pulse: {
+    variants: {
+        // Age Group 1: Pre-Primary (Nursery, LKG, UKG)
+        // Source: PREPRIMARY PARENT PULSE image
+        pp: [
+            { id: 'pp_parent_1', label: '1. Independence', max_score: 5, description: 'Self-Help Skills: Encourage child to eat/toilet independently.' },
+            { id: 'pp_parent_2', label: '2. Habits', max_score: 5, description: 'Sleep & Routine: Is the child well-rested and settled?' },
+            { id: 'pp_parent_3', label: '3. Motor Skills', max_score: 5, description: 'Home Practice: Scribbling/activities at home.' },
+            { id: 'pp_parent_4', label: '4. Separation', max_score: 5, description: 'Drop-off Behavior: Handling separation anxiety.' },
+            { id: 'pp_parent_5', label: '5. Speech', max_score: 5, description: 'Oral/Speech Development: Interactions at home.' },
+        ],
+            // Age Group 2: Foundational (Grade 1-2)
+            // Source: FOUNDATIONAL PRIMARY PARENT PULSE image
+            foundational: [
+                { id: 'found_parent_1', label: '1. Academics', max_score: 5, description: 'Reading Habits: Reading fluency support at home.' },
+                { id: 'found_parent_2', label: '2. Responsibility', max_score: 5, description: 'Bag & Belongings: Who packs the bag?' },
+                { id: 'found_parent_3', label: '3. Writing', max_score: 5, description: 'Handwriting & Motor Skills: Focus on legibility.' },
+                { id: 'found_parent_4', label: '4. Math', max_score: 5, description: 'Basic Numeracy: Real-world math usage.' },
+                { id: 'found_parent_5', label: '5. Discipline', max_score: 5, description: 'Morning Routine: Punctuality and readiness.' },
+            ],
+                // Age Group 3: Primary (Grade 3-5)
+                // Source: PRIMARY PARENT PULSE image
+                primary: [
+                    { id: 'prim_parent_1', label: '1. Academics', max_score: 5, description: 'Concept vs Rote: Focus on understanding.' },
+                    { id: 'prim_parent_2', label: '2. Social', max_score: 5, description: 'Peer Awareness: Knowledge of friends/conflicts.' },
+                    { id: 'prim_parent_3', label: '3. Habits', max_score: 5, description: 'Screen Time & Focus: Digital discipline.' },
+                    { id: 'prim_parent_4', label: '4. Organization', max_score: 5, description: 'Project Work: Support vs Doing it for them.' },
+                    { id: 'prim_parent_5', label: '5. Values', max_score: 5, description: 'Honesty & Ownership: Reaction to mistakes.' },
+                ],
+                    // Age Group 4: Upper Primary (Grade 6-8)
+                    // Source: UPPER PRIMARY PARENT PULSE image
+                    upper_primary: [
+                        { id: 'up_parent_1', label: '1. Behavior', max_score: 5, description: 'Respect & Attitude: Handling backtalk/puberty.' },
+                        { id: 'up_parent_2', label: '2. Digital', max_score: 5, description: 'Cyber Safety/Social Media: Monitoring online life.' },
+                        { id: 'up_parent_3', label: '3. Academics', max_score: 5, description: 'Self-Study Habits: Move from homework to study.' },
+                        { id: 'up_parent_4', label: '4. Grooming', max_score: 5, description: 'Hygiene & Presentation: Personal care.' },
+                        { id: 'up_parent_5', label: '5. Language', max_score: 5, description: 'Communication Skills: Language used at home.' },
+                    ],
+                        // Age Group 5: High School (Grade 9-12)
+                        // Source: HIGH SCHOOL PARENT PULSE image
+                        high_school: [
+                            { id: 'hs_parent_1', label: '1. Data', max_score: 5, description: 'Marksheet Awareness: Knowledge of specific data.' },
+                            { id: 'hs_parent_2', label: '2. Stress', max_score: 5, description: 'Emotional Resilience: Handling exam pressure.' },
+                            { id: 'hs_parent_3', label: '3. Remedial', max_score: 5, description: 'Response to Gaps: Action on weak subjects.' },
+                            { id: 'hs_parent_4', label: '4. Distraction', max_score: 5, description: 'Relationships & Focus: Managing teenage distractions.' },
+                            { id: 'hs_parent_5', label: '5. Career', max_score: 5, description: 'Future Orientation: Clarity on next steps.' },
+                        ]
+    }
+}
+}
 }

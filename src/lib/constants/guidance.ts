@@ -431,11 +431,125 @@ export const GUIDANCE: Record<string, Record<number, string>> = {
         3: 'Baseline Phase: Submit Post-Exam Anatomy Report + Conducting Monthly Demo Lessons + Creating HOTS Bank.',
         4: 'Growth Phase: Conduct Peer Audits + Lead Curriculum Redesign + Mentor Junior Leaders.',
         5: 'Distinguished Phase: Autonomous Department Run + Strategic Consultation + Creating Leaders.'
+        5: 'Distinguished Phase: Autonomous Department Run + Strategic Consultation + Creating Leaders.'
+    },
+
+    // --- Vidya Pulse (Student Diagnostics) ---
+    // Age 3-6
+    'vp_36_1': {
+        1: 'Action: Don’t yell. Calmly and physically guide them to a quiet corner. Sit with them until calm.',
+        2: 'Action: Maintain firm boundaries. Acknowledge feelings ("I know you are sad") but enforce the rule.',
+        3: 'Action: Redirect behavior. Use a distraction or a "Calm Down Jar".',
+        4: 'Action: Verbal praise. "I like how you used your words instead of crying."',
+        5: 'Action: Empower them. "You handled that so well! Would you like to help me with this task?"'
+    },
+    'vp_36_2': {
+        1: 'Action: Establish a quick goodbye ritual. Do not linger. Hand over to a favorite activity immediately.',
+        2: 'Action: Use a transition object (toy/blanket) from home to comfort them.',
+        3: 'Action: Reassure periodically. "Mummy will come after snack time."',
+        4: 'Action: Praise bravery. "You came in so happily today!"',
+        5: 'Action: Buddy System. Ask them to help a crying friend settle in.'
+    },
+    'vp_36_3': {
+        1: 'Action: Model sharing. "My turn, your turn." physically guide their hand to share.',
+        2: 'Action: Supervised play. Stay close and narrate interactions.',
+        3: 'Action: Prompt words. "Ask him: Can I play?"',
+        4: 'Action: Observe from distance. Intervene only if conflict escalates.',
+        5: 'Action: Praise leadership. "Thank you for sharing your blocks with Sarah!"'
+    },
+    'vp_36_4': {
+        1: 'Action: Shorten tasks. Break instructions into single steps. Use visual cues.',
+        2: 'Action: Proximity control. Sit next to the child during circle time.',
+        3: 'Action: Call back. "Eyes on me!" using a bell or clap pattern.',
+        4: 'Action: Extend time. Challenge them to stay focused for 2 more minutes.',
+        5: 'Action: Role model. Ask them to hold the book/pointer for the class.'
+    },
+
+    // Age 6-10
+    'vp_610_1': {
+        1: 'Action: Backpack Audit. Daily morning check of the bag with the teacher.',
+        2: 'Action: Homework Log. Sign the diary daily and verify completion.',
+        3: 'Action: Checklist. Provide a laminated checklist for their desk.',
+        4: 'Action: Peer Buddy. Pair with a organized student for end-of-day packing.',
+        5: 'Action: Class Monitor. Assign them to check if others have packed up.'
+    },
+    'vp_610_2': {
+        1: 'Action: Private correction. Never scold in front of the class. Discuss behavior at recess.',
+        2: 'Action: Cool-down zone. Send to a quiet desk to reflect for 5 minutes.',
+        3: 'Action: "I" Statements. Teach them to say "I feel angry when..." instead of acting out.',
+        4: 'Action: Positive reinforcement. Catch them being good and praise immediately.',
+        5: 'Action: Leadership role. Make them a line leader or helper.'
+    },
+    'vp_610_3': {
+        1: 'Action: Digital Detox. Recommend parent to cut screen time to zero for 1 week.',
+        2: 'Action: Active Breaks. Replace screen breaks with physical movement (jumping jacks).',
+        3: 'Action: Timer method. Use a timer for focus blocks (20 mins work, 5 mins break).',
+        4: 'Action: Interest pivoting. Connect screen interests (Minecraft) to offline tasks (Lego building).',
+        5: 'Action: Tech Leader. Ask them to help set up the projector/smart board.'
+    },
+    'vp_610_4': {
+        1: 'Action: Conflict Script. Teach specific apology phrases ("I am sorry for hitting").',
+        2: 'Action: Mediation. Teacher-led discussion between the two students.',
+        3: 'Action: Empathy prompt. "Look at his face, how do you thinking he feels?"',
+        4: 'Action: Team role. Assign group work where cooperation is required.',
+        5: 'Action: Peacemaker. Publicly praise their ability to solve a fight.'
+    },
+    'vp_610_5': {
+        1: 'Action: Small wins. Give very easy tasks they can succeed at to build confidence.',
+        2: 'Action: Private praise. Note on their desk "Great job today!".',
+        3: 'Action: Growth Mindset. Praise effort, not intelligence ("You worked hard on this").',
+        4: 'Action: Class presentation. Ask them to show their work to the class.',
+        5: 'Action: Mentor. Ask them to help a struggling student.'
+    },
+
+    // Age 11-16
+    'vp_1116_1': {
+        1: 'Action: Stress assessment. Refer to school counselor immediately. Reduce homework load temporarily.',
+        2: 'Action: Study Plan. Create a revision timetable with the student.',
+        3: 'Action: Integrity Workshop. Discuss "Why we learn" vs "Getting grades".',
+        4: 'Action: Future mapping. Discuss career paths that align with their strengths.',
+        5: 'Action: Academic Squad. Have them lead a study group.'
+    },
+    'vp_1116_2': {
+        1: 'Action: Parent Meeting. Discuss online safety and monitoring immediately.',
+        2: 'Action: Digital Citizenship. Have them complete a reflection worksheet on online footprint.',
+        3: 'Action: Privacy Check. Guide them to review social media settings.',
+        4: 'Action: Balance Challenge. Challenge them to a "No Phone Day" and report back.',
+        5: 'Action: Cyber Ambassador. Have them create a poster on cyber safety for the class.'
+    },
+    'vp_1116_3': {
+        1: 'Action: Risk Intervention. Immediate meeting with principal and parents.',
+        2: 'Action: Reality Check. Discuss real-world consequences of reckless behavior.',
+        3: 'Action: Channel Energy. Encourage sports or high-energy extracurriculars.',
+        4: 'Action: Responsibility. Give them a "High Trust" task (handling money/equipment).',
+        5: 'Action: Student Council. Nominate for a leadership position.'
+    },
+    'vp_1116_4': {
+        1: 'Action: Counselor Referral. Do not attempt to treat alone. Alert parents.',
+        2: 'Action: Check-ins. Daily 2-minute chat: "How are you feeling today?"',
+        3: 'Action: Journaling. Encourage writing down feelings (private journal).',
+        4: 'Action: Stress busters. Teach breathing techniques before exams.',
+        5: 'Action: Peer Support. Train them to be a "listener" for friends.'
+    },
+    'vp_1116_5': {
+        1: 'Action: Behavioral Contract. Signed agreement on expected behavior and consequences.',
+        2: 'Action: Choice Theory. "You can do X and get Y, or do A and get B. You choose."',
+        3: 'Action: Listen first. "Tell me your side of the story" before correcting.',
+        4: 'Action: Negotiation. Allow them to have input on a class rule.',
+        5: 'Action: Role Model. Publicly acknowledge their maturity in handling a situation.'
     }
 }
 
-export function getActionPlan(criteriaId: string, score: number): string {
-    const guide = GUIDANCE[criteriaId]
-    if (!guide) return "Maintain current standards and aim for next level."
-    return guide[score] || "Maintain current standards and aim for next level."
+return guide[score] || "Maintain current standards and aim for next level."
+}
+
+export const PARENT_ZONES = [
+    { min: 40, max: 50, label: 'Green Zone', color: 'text-green-600', bg: 'bg-green-100', description: "Model Student/Family. (These are your school's brand ambassadors)." },
+    { min: 30, max: 39, label: 'Yellow Zone', color: 'text-yellow-600', bg: 'bg-yellow-100', description: "Average. (Needs minor nudges to move up)." },
+    { min: 20, max: 29, label: 'Orange Zone', color: 'text-orange-600', bg: 'bg-orange-100', description: "At-Risk. (Requires intervention. Either academic gaps or home discipline is missing)." },
+    { min: 0, max: 19, label: 'Red Zone', color: 'text-red-600', bg: 'bg-red-100', description: "Critical. (Immediate Principal/Counselor meeting required. High risk of dropout or failure)." }
+]
+
+export function getParentZone(totalScore: number) {
+    return PARENT_ZONES.find(z => totalScore >= z.min && totalScore <= z.max) || PARENT_ZONES[3]
 }

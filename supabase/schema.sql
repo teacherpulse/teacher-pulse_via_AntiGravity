@@ -126,6 +126,76 @@ alter table module_almf enable row level security;
 create policy "Module 5 Admin" on module_almf for all using (
   exists (select 1 from profiles where id = auth.uid() and role = 'admin')
 );
-create policy "Module 5 Teacher" on module_almf for select using (
   exists (select 1 from evaluations e where e.id = evaluation_id and e.teacher_id = auth.uid() and e.status = 'published')
+);
+
+-- ==========================================
+-- VIDYA PULSE (STUDENT DIAGNOSTICS)
+-- ==========================================
+
+-- STUDENTS TABLE
+create table students (
+  id uuid default uuid_generate_v4() primary key,
+  full_name text not null,
+  admission_number text unique,
+  grade_level text, -- e.g., 'Grade 5', 'Nursery'
+  section text,
+  age_group text, -- '3-6', '6-10', '11-16' (Helper for logic)
+  parent_name text,
+  created_at timestamp with time zone default timezone('utc'::text, now())
+);
+
+alter table students enable row level security;
+create policy "Public students view" on students for select using (true); -- Teachers need to see all students
+create policy "Admins manage students" on students for all using (
+  exists (select 1 from profiles where id = auth.uid() and role = 'admin')
+);
+
+-- STUDENT EVALUATIONS TABLE
+create table student_evaluations (
+  id uuid default uuid_generate_v4() primary key,
+  student_id uuid references students(id) not null,
+  evaluator_id uuid references profiles(id) not null,
+  term text not null,
+  evaluation_date date default now(),
+  status text default 'draft' check (status in ('draft', 'published')),
+  evaluation_type text default 'vidya_pulse' check (evaluation_type in ('vidya_pulse', 'parent_pulse')), -- Differentiator
+  overall_score numeric(4, 2),
+  action_plan jsonb default '{}'::jsonb, -- Stores the generated Action Plan or Report Data
+  created_at timestamp with time zone default timezone('utc'::text, now())
+);
+
+alter table student_evaluations enable row level security;
+create policy "Teachers manage student evals" on student_evaluations for all using (
+  exists (select 1 from profiles where id = auth.uid() and (role = 'admin' or role = 'teacher'))
+);
+
+-- MODULE: VIDYA PULSE (Student Behavior)
+-- We use a single table with JSONC criteria to handle the 3 age variants.
+create table module_vidya_pulse (
+  id uuid default uuid_generate_v4() primary key,
+  evaluation_id uuid references student_evaluations(id) on delete cascade unique,
+  criteria_scores jsonb default '{}'::jsonb,
+  feedback text,
+  module_score numeric(4, 2)
+);
+
+alter table module_vidya_pulse enable row level security;
+create policy "Teachers manage vidya pulse" on module_vidya_pulse for all using (
+  exists (select 1 from profiles where id = auth.uid() and (role = 'admin' or role = 'teacher'))
+);
+
+-- MODULE: PARENT PULSE (Parent Engagement)
+-- Handles 5 age variants (Pre-Primary, Foundational, Primary, Upper Primary, High School)
+create table module_parent_pulse (
+  id uuid default uuid_generate_v4() primary key,
+  evaluation_id uuid references student_evaluations(id) on delete cascade unique,
+  criteria_scores jsonb default '{}'::jsonb,
+  feedback text,
+  module_score numeric(4, 2)
+);
+
+alter table module_parent_pulse enable row level security;
+create policy "Teachers manage parent pulse" on module_parent_pulse for all using (
+  exists (select 1 from profiles where id = auth.uid() and (role = 'admin' or role = 'teacher'))
 );
