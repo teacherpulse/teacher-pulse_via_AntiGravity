@@ -110,6 +110,22 @@ alter table module_professional_integrity_excellence enable row level security;
 create policy "Module 4 Admin" on module_professional_integrity_excellence for all using (
   exists (select 1 from profiles where id = auth.uid() and role = 'admin')
 );
-create policy "Module 4 Teacher" on module_professional_integrity_excellence for select using (
+  exists (select 1 from evaluations e where e.id = evaluation_id and e.teacher_id = auth.uid() and e.status = 'published')
+);
+
+-- MODULE 5: ALMF (HODs)
+create table module_almf (
+  id uuid default uuid_generate_v4() primary key,
+  evaluation_id uuid references evaluations(id) on delete cascade unique,
+  criteria_scores jsonb default '{}'::jsonb,
+  feedback text,
+  module_score numeric(4, 2)
+);
+
+alter table module_almf enable row level security;
+create policy "Module 5 Admin" on module_almf for all using (
+  exists (select 1 from profiles where id = auth.uid() and role = 'admin')
+);
+create policy "Module 5 Teacher" on module_almf for select using (
   exists (select 1 from evaluations e where e.id = evaluation_id and e.teacher_id = auth.uid() and e.status = 'published')
 );

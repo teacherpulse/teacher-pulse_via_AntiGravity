@@ -156,5 +156,35 @@ export const CRITERIA: { [key: string]: ModuleCriteria } = {
                 { id: 'pie_10', label: '10. Positive Attitude', max_score: 5, description: 'Constructive and optimistic outlook.' },
             ]
         }
+    },
+
+    // Module 5 (ALMF): Academic Leadership Mastery Framework (HODs)
+    module_almf: {
+        common: [
+            {
+                id: 'almf_1',
+                label: '1. Instructional Supervision (IS)',
+                max_score: 5,
+                description: 'Quality, frequency, and impact of teacher observations and mentoring. From Absentee Leader (1) to Transformational Leader (5).'
+            },
+            {
+                id: 'almf_2',
+                label: '2. Operational Rigor (OR)',
+                max_score: 5,
+                description: 'Accuracy of audits (Diaries, Corrections), syllabus tracking, and resource management. From Negligent (1) to Standard Setter (5).'
+            },
+            {
+                id: 'almf_3',
+                label: '3. Data-Driven Strategy (DDS)',
+                max_score: 5,
+                description: 'Analysis of student performance, remedial planning, availability/analysis of results. From Data Avoider (1) to Result Architect (5).'
+            },
+            {
+                id: 'almf_4',
+                label: '4. Team Culture & Integrity (TCI)',
+                max_score: 5,
+                description: 'Conflict resolution, alignment with management, ethics. From Divider (1) to Institutional Pillar (5).'
+            },
+        ]
     }
 }
