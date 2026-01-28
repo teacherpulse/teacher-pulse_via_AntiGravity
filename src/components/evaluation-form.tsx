@@ -24,6 +24,7 @@ import {
 import { toast } from "sonner"
 import { EvaluationSlider } from "@/components/evaluation-slider"
 import { CRITERIA, ModuleCriteria } from "@/lib/constants/criteria"
+import { getActionPlan } from "@/lib/constants/guidance"
 import { createClient } from "@/lib/supabase/client"
 import * as React from "react"
 import { Profile } from "@/types"
@@ -76,46 +77,48 @@ export default function EvaluationForm({ moduleId, teacher, evaluatorId }: Evalu
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setIsSubmitting(true)
         try {
-            // 1. Create main evaluation record if not exists (or we create one per module session?)
-            // The Plan says: One Evaluation ID -> Many Modules.
-            // For simplicity in this demo flow: Create a NEW Evaluation + Module Record together.
+            // 1. Calculate Scores & Generate Plan FIRST
+            let totalScore = 0
+            let maxTotal = 0
+            const cleanedScores: Record<string, number> = {}
+            const actionPlan: Record<string, string> = {}
 
-            // A. Insert Evaluation Header
+            // Process scores
+            Object.entries(values.criteria_scores).forEach(([key, val]) => {
+                // val is an array [score], get the number
+                const score = val[0]
+                cleanedScores[key] = score
+                totalScore += score
+
+                // Get Max Score
+                const q = questions.find(q => q.id === key)
+                if (q) maxTotal += q.max_score
+
+                // Get Action Plan
+                const action = getActionPlan(key, score)
+                if (action) actionPlan[key] = action
+            })
+
+            const avgScore5 = maxTotal > 0 ? (totalScore / questions.length) : 0
+
+            // 2. Insert Evaluation Header
+            // We store the Action Plan in the main table
             const { data: evalData, error: evalError } = await supabase
                 .from('evaluations')
                 .insert({
                     teacher_id: teacher.id,
                     evaluator_id: evaluatorId,
-                    term: "Term 1 2025", // Hardcoded for demo
+                    term: "Term 1 2025",
                     status: 'draft',
-                    overall_score: 0 // Calculate later
+                    overall_score: 0,
+                    action_plan: actionPlan
                 })
                 .select()
                 .single()
 
             if (evalError) throw evalError
 
-            // B. Calculate Module Score
-            let totalScore = 0
-            let maxTotal = 0
-
-            // Convert array values from slider to single numbers
-            const cleanedScores: Record<string, number> = {}
-            Object.entries(values.criteria_scores).forEach(([key, val]) => {
-                const score = val[0]
-                cleanedScores[key] = score
-                totalScore += score
-                // Find max for this q
-                const q = questions.find(q => q.id === key)
-                if (q) maxTotal += q.max_score
-            })
-
-            // Avoid division by zero
-            const actualScore = maxTotal > 0 ? (totalScore / maxTotal) * 100 : 0 // Percentage? Or 5-scale?
-            // Let's store average on 5 scale
-            const avgScore5 = maxTotal > 0 ? (totalScore / questions.length) : 0
-
-            // C. Insert Module Record
+            // 3. Insert Module Detail Record
             const { error: modError } = await supabase
                 .from(moduleId)
                 .insert({
@@ -127,8 +130,9 @@ export default function EvaluationForm({ moduleId, teacher, evaluatorId }: Evalu
 
             if (modError) throw modError
 
-            toast.success("Evaluation Saved!")
-            router.push('/dashboard')
+            toast.success("Evaluation & Action Plan Saved!")
+            // Redirect to the new "Plan View" page (to be created)
+            router.push(`/dashboard/evaluations/${evalData.id}/plan`)
 
         } catch (error) {
             console.error(error)
