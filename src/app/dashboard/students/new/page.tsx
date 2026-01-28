@@ -8,8 +8,9 @@ export const dynamic = 'force-dynamic'
 export default async function NewStudentEvaluationPage({
     searchParams,
 }: {
-    searchParams: { studentId?: string; type?: string }
+    searchParams: Promise<{ studentId?: string; type?: string }>
 }) {
+    const params = await searchParams
     const supabase = createClient()
 
     // 1. Check Auth
@@ -21,7 +22,7 @@ export default async function NewStudentEvaluationPage({
     }
 
     // 2. Validate Params
-    if (!searchParams.studentId) {
+    if (!params.studentId) {
         redirect('/dashboard/students')
     }
 
@@ -30,7 +31,7 @@ export default async function NewStudentEvaluationPage({
         // @ts-ignore
         .from('students')
         .select('*')
-        .eq('id', searchParams.studentId)
+        .eq('id', params.studentId)
         .single()
 
     if (error || !student) {
@@ -44,7 +45,7 @@ export default async function NewStudentEvaluationPage({
                 student={student}
                 evaluatorId={user.id}
                 ageGroup={student.age_group}
-                evaluationType={(searchParams.type as 'vidya_pulse' | 'parent_pulse') || 'vidya_pulse'}
+                evaluationType={(params.type as 'vidya_pulse' | 'parent_pulse') || 'vidya_pulse'}
             />
         </div>
     )

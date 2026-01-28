@@ -32,6 +32,9 @@ async function getData() {
     ]
 }
 
+// @ts-ignore
+export const dynamic = 'force-dynamic'
+
 export default async function EvaluationsPage() {
     const data = await getData()
 

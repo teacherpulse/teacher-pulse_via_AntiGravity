@@ -41,6 +41,9 @@ async function getData(): Promise<Profile[]> {
     ]
 }
 
+// @ts-ignore
+export const dynamic = 'force-dynamic'
+
 export default async function StaffPage() {
     const data = await getData()
 

@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, use } from "react"
 import { createClient } from "@/lib/supabase/client"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -10,7 +10,8 @@ import { useRouter } from "next/navigation"
 
 export const dynamic = 'force-dynamic'
 
-export default function StudentPlanPage({ params }: { params: { id: string } }) {
+export default function StudentPlanPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = use(params)
     const [evaluation, setEvaluation] = useState<any>(null)
     const [student, setStudent] = useState<any>(null)
     const [loading, setLoading] = useState(true)
@@ -24,7 +25,7 @@ export default function StudentPlanPage({ params }: { params: { id: string } }) 
                 // @ts-ignore
                 .from('student_evaluations')
                 .select('*')
-                .eq('id', params.id)
+                .eq('id', id)
                 .single()
 
             if (evalError) return
@@ -44,7 +45,7 @@ export default function StudentPlanPage({ params }: { params: { id: string } }) 
             setLoading(false)
         }
         fetchData()
-    }, [params.id])
+    }, [id])
 
     if (loading) return <div className="flex bg-muted/20 min-h-screen items-center justify-center"><Loader2 className="animate-spin" /></div>
 
