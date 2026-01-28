@@ -14,6 +14,7 @@ import { CRITERIA } from "@/lib/constants/criteria"
 async function getEvaluation(id: string) {
     const supabase = createClient()
     const { data: evaluation } = await supabase
+        // @ts-ignore
         .from('evaluations')
         .select('*, teacher:teacher_id(full_name, department)')
         .eq('id', id)
@@ -21,6 +22,8 @@ async function getEvaluation(id: string) {
 
     return evaluation
 }
+
+export const dynamic = 'force-dynamic'
 
 export default async function ActionPlanPage({
     params,

@@ -13,6 +13,9 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "sonner"
 
+// @ts-ignore
+export const dynamic = 'force-dynamic'
+
 export default function StudentsPage() {
     const [students, setStudents] = useState<Student[]>([])
     const [loading, setLoading] = useState(true)

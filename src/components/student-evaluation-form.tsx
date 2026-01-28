@@ -17,7 +17,7 @@ import { Student } from "@/types"
 
 const formSchema = z.object({
     term: z.string().min(1, "Term is required"),
-    scores: z.record(z.number().min(1).max(5)),
+    scores: z.record(z.string(), z.number().min(1).max(5)),
     feedback: z.string().optional(),
 })
 
@@ -203,24 +203,12 @@ export function StudentEvaluationForm({ student, evaluatorId, ageGroup, evaluati
 
                         <div className="space-y-6">
                             {criteriaList.map((criterion) => (
-                                <FormField
+                                <EvaluationSlider
                                     key={criterion.id}
-                                    control={form.control}
                                     name={`scores.${criterion.id}`}
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormControl>
-                                                <EvaluationSlider
-                                                    label={criterion.label}
-                                                    description={criterion.description}
-                                                    value={field.value}
-                                                    onChange={field.onChange}
-                                                    max={criterion.max_score}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
+                                    label={criterion.label}
+                                    description={criterion.description}
+                                    max={criterion.max_score}
                                 />
                             ))}
                         </div>

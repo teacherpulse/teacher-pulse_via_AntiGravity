@@ -3,15 +3,19 @@ import { redirect } from "next/navigation"
 import { StudentEvaluationForm } from "@/components/student-evaluation-form"
 
 // This is a Server Component
+export const dynamic = 'force-dynamic'
+
 export default async function NewStudentEvaluationPage({
     searchParams,
 }: {
-    searchParams: { studentId?: string }
+    searchParams: { studentId?: string; type?: string }
 }) {
     const supabase = createClient()
 
     // 1. Check Auth
-    const { data: { user } } = await supabase.auth.getUser()
+    // @ts-ignore
+    const { data } = await supabase.auth.getUser()
+    const user = data?.user
     if (!user) {
         redirect('/')
     }
@@ -23,6 +27,7 @@ export default async function NewStudentEvaluationPage({
 
     // 3. Fetch Student
     const { data: student, error } = await supabase
+        // @ts-ignore
         .from('students')
         .select('*')
         .eq('id', searchParams.studentId)

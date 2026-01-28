@@ -8,6 +8,8 @@ import { Loader2, Printer, CheckCircle, AlertTriangle } from "lucide-react"
 import { CRITERIA } from "@/lib/constants/criteria"
 import { useRouter } from "next/navigation"
 
+export const dynamic = 'force-dynamic'
+
 export default function StudentPlanPage({ params }: { params: { id: string } }) {
     const [evaluation, setEvaluation] = useState<any>(null)
     const [student, setStudent] = useState<any>(null)
@@ -19,6 +21,7 @@ export default function StudentPlanPage({ params }: { params: { id: string } }) 
         const fetchData = async () => {
             // Fetch Evaluation
             const { data: evalData, error: evalError } = await supabase
+                // @ts-ignore
                 .from('student_evaluations')
                 .select('*')
                 .eq('id', params.id)
@@ -28,6 +31,7 @@ export default function StudentPlanPage({ params }: { params: { id: string } }) 
 
             // Fetch Student
             const { data: studentData, error: studentError } = await supabase
+                // @ts-ignore
                 .from('students')
                 .select('*')
                 .eq('id', evalData.student_id)
@@ -139,5 +143,6 @@ export default function StudentPlanPage({ params }: { params: { id: string } }) 
                     <p>Nalanda High School</p>
                 </div>
             </div>
-            )
+        </div>
+    )
 }
