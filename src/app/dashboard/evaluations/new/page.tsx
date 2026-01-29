@@ -1,25 +1,11 @@
 import AssessmentForm from "@/components/assessment-form"
-import { createClient } from "@/lib/supabase/server"
+import { teacherData } from "@/lib/mock-data"
 
 // @ts-ignore
 export const dynamic = 'force-dynamic'
 
-export default async function NewEvaluationPage() {
-    const supabase = await createClient()
-
-    // Fetch only teachers
-    const { data: teachers, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('role', 'teacher')
-        .order('full_name')
-
-    if (error) {
-        console.error("Error fetching teachers:", error)
-        return <div>Error loading teachers. Please try again later.</div>
-    }
-
+export default function NewEvaluationPage() {
     return (
-        <AssessmentForm teachers={teachers || []} />
+        <AssessmentForm teachers={teacherData as any} />
     )
 }

@@ -24,7 +24,7 @@ import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContai
 
 // --- Types ---
 interface Teacher {
-    id: string; name: string; role: string; department: string; email: string; mobile: string; avgScore: number;
+    id: string; name: string; role: string; designation: string; department: string; email: string; mobile: string; avgScore: number;
 }
 interface Student {
     id: string; name: string; class: string; section: string; gender: string; fatherName: string; motherName: string; mobile: string; vidyaPulseScore: number;
@@ -34,6 +34,9 @@ interface Parent {
 }
 
 // --- Mock Data Generators ---
+import { teacherData, studentData, parentData } from "@/lib/mock-data"
+
+// --- Mock Data Generators ---
 const performanceTrend = [
     { name: 'Jan', score: 65 }, { name: 'Feb', score: 72 }, { name: 'Mar', score: 68 },
     { name: 'Apr', score: 75 }, { name: 'May', score: 82 }, { name: 'Jun', score: 80 },
@@ -41,13 +44,13 @@ const performanceTrend = [
     { name: 'Oct', score: 90 }, { name: 'Nov', score: 89 }, { name: 'Dec', score: 92 },
 ];
 
-const teacherStats = { total: 45, active: 42, avg: 88, green: 38, yellow: 3, orange: 2, red: 2 };
+const teacherStats = { total: 34, active: 34, avg: 85, green: 25, yellow: 5, orange: 2, red: 2 };
 const studentStats = { total: 1250, active: 1240, avg: 82, green: 1100, yellow: 60, orange: 40, red: 50 };
 const parentStats = { total: 2100, active: 1950, avg: 76, green: 1600, yellow: 200, orange: 150, red: 150 };
 
 const attentionListTeachers = [
-    { name: 'Rajesh Koothrappali', score: 45 },
-    { name: 'Penny Hofstadter', score: 48 },
+    { name: 'Kausar Begum', score: 45 },
+    { name: 'Sadiya Sultana', score: 48 },
 ];
 const attentionListStudents = [
     { name: 'Bart Simpson', score: 35 },
@@ -56,20 +59,6 @@ const attentionListStudents = [
 const attentionListParents = [
     { name: 'Homer Simpson', score: 40 },
     { name: 'Peter Griffin', score: 38 },
-];
-
-const teacherData: Teacher[] = [
-    { id: "1", name: "Ravi Kumar", role: "Teacher", department: "Science", email: "ravi@school.com", mobile: "9876543210", avgScore: 88 },
-    { id: "2", name: "Sita Sharma", role: "HOD", department: "Math", email: "sita@school.com", mobile: "9876543211", avgScore: 92 },
-    { id: "3", name: "Amit Verma", role: "Teacher", department: "History", email: "amit@school.com", mobile: "9876543214", avgScore: 78 },
-];
-const studentData: Student[] = [
-    { id: "1", name: "Arjun Singh", class: "10", section: "A", gender: "Male", fatherName: "Raj Singh", motherName: "Priya Singh", mobile: "9876543212", vidyaPulseScore: 85 },
-    { id: "2", name: "Ananya Gupta", class: "9", section: "B", gender: "Female", fatherName: "Amit Gupta", motherName: "Neha Gupta", mobile: "9876543213", vidyaPulseScore: 90 },
-];
-const parentData: Parent[] = [
-    { id: "1", name: "Raj Singh", studentName: "Arjun Singh", class: "10", section: "A", gender: "Male", mobile: "9876543212", parentPulseScore: 78 },
-    { id: "2", name: "Neha Gupta", studentName: "Ananya Gupta", class: "9", section: "B", gender: "Female", mobile: "9876543213", parentPulseScore: 88 },
 ];
 
 // ... existing code ...
@@ -307,8 +296,17 @@ export default function StakeholdersPage() {
                                     {teacherData.map((teacher, index) => (
                                         <TableRow key={teacher.id} className="group hover:bg-muted/50 transition-colors">
                                             <TableCell>{index + 1}</TableCell>
-                                            <TableCell className="font-medium text-primary">{teacher.name}</TableCell>
-                                            <TableCell>{teacher.role}</TableCell>
+                                            <TableCell className="font-medium text-primary">
+                                                <Link href={`/dashboard/teachers/${teacher.id}`} className="hover:underline">
+                                                    {teacher.name}
+                                                </Link>
+                                            </TableCell>
+                                            <TableCell>
+                                                <div className="flex flex-col">
+                                                    <span>{teacher.designation}</span>
+                                                    <span className="text-xs text-muted-foreground">{teacher.role}</span>
+                                                </div>
+                                            </TableCell>
                                             <TableCell>{teacher.department}</TableCell>
                                             <TableCell>{teacher.email}</TableCell>
                                             <TableCell>{teacher.mobile}</TableCell>
@@ -333,7 +331,10 @@ export default function StakeholdersPage() {
                                                         <DropdownMenuItem asChild>
                                                             <Link href="/dashboard/evaluations">Teacher Pulse</Link>
                                                         </DropdownMenuItem>
-                                                        <DropdownMenuItem>View Details</DropdownMenuItem>
+                                                        <DropdownMenuItem asChild>
+                                                            <Link href={`/dashboard/teachers/${teacher.id}`}>View Profile</Link>
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuItem>Edit Profile</DropdownMenuItem>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>
                                             </TableCell>
@@ -379,7 +380,11 @@ export default function StakeholdersPage() {
                                     {studentData.map((student, index) => (
                                         <TableRow key={student.id} className="group hover:bg-muted/50 transition-colors">
                                             <TableCell>{index + 1}</TableCell>
-                                            <TableCell className="font-medium text-primary">{student.name}</TableCell>
+                                            <TableCell className="font-medium text-primary">
+                                                <Link href={`/dashboard/students/${student.id}`} className="hover:underline">
+                                                    {student.name}
+                                                </Link>
+                                            </TableCell>
                                             <TableCell>{student.class}</TableCell>
                                             <TableCell>{student.section}</TableCell>
                                             <TableCell>{student.gender}</TableCell>
@@ -403,7 +408,10 @@ export default function StakeholdersPage() {
                                                         <DropdownMenuItem asChild>
                                                             <Link href="/dashboard/students">Vidya Pulse</Link>
                                                         </DropdownMenuItem>
-                                                        <DropdownMenuItem>View Profile</DropdownMenuItem>
+                                                        <DropdownMenuItem asChild>
+                                                            <Link href={`/dashboard/students/${student.id}`}>View Profile</Link>
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuItem>Edit Profile</DropdownMenuItem>
                                                         <DropdownMenuItem>Academic Record</DropdownMenuItem>
                                                     </DropdownMenuContent>
                                                 </DropdownMenu>
@@ -449,7 +457,11 @@ export default function StakeholdersPage() {
                                     {parentData.map((parent, index) => (
                                         <TableRow key={parent.id} className="group hover:bg-muted/50 transition-colors">
                                             <TableCell>{index + 1}</TableCell>
-                                            <TableCell className="font-medium text-primary">{parent.name}</TableCell>
+                                            <TableCell className="font-medium text-primary">
+                                                <Link href={`/dashboard/parents/${parent.id}`} className="hover:underline">
+                                                    {parent.name}
+                                                </Link>
+                                            </TableCell>
                                             <TableCell>{parent.studentName}</TableCell>
                                             <TableCell>{parent.class}</TableCell>
                                             <TableCell>{parent.section}</TableCell>
@@ -472,6 +484,10 @@ export default function StakeholdersPage() {
                                                         <DropdownMenuItem asChild>
                                                             <Link href="/dashboard/parent-pulse">Parent Pulse</Link>
                                                         </DropdownMenuItem>
+                                                        <DropdownMenuItem asChild>
+                                                            <Link href={`/dashboard/parents/${parent.id}`}>View Profile</Link>
+                                                        </DropdownMenuItem>
+                                                        <DropdownMenuItem>Edit Profile</DropdownMenuItem>
                                                         <DropdownMenuItem>Contact</DropdownMenuItem>
                                                         <DropdownMenuItem>Feedback History</DropdownMenuItem>
                                                     </DropdownMenuContent>

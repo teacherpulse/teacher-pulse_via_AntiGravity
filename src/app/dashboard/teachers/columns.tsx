@@ -52,6 +52,10 @@ export const columns: ColumnDef<Profile>[] = [
         header: "Email",
     },
     {
+        accessorKey: "designation",
+        header: "Designation",
+    },
+    {
         accessorKey: "department",
         header: "Department",
     },

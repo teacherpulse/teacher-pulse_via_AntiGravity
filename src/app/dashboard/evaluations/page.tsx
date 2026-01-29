@@ -12,23 +12,23 @@ import {
 } from "@/components/ui/card"
 
 async function getData() {
-    // Mock Data
+    // Mock Data reflecting the new structure
     return [
         {
-            id: "728ed52f",
-            full_name: "Alice Johnson",
-            email: "alice@nalanda.edu",
-            role: "teacher",
-            department: "Mathematics",
+            id: "1",
+            full_name: "L SHASHIKALA",
+            email: "shashikala@teacherpulse.in",
+            role: "Teacher",
+            department: "High School (Grade 6 to 10)",
             joining_date: "2023-01-15",
             avatar_url: ""
-        } as any, // Cast to any to avoid strict type mismatch with partial profile
+        } as any,
         {
-            id: "489e1d42",
-            full_name: "Bob Smith",
-            email: "bob@nalanda.edu",
-            role: "teacher",
-            department: "Pre-Primary",
+            id: "11",
+            full_name: "DONTHULA PAVITHRA",
+            email: "dpavithra@teacherpulse.in",
+            role: "HOD",
+            department: "Primary (Grade 3 to 5)",
             joining_date: "2022-06-10",
             avatar_url: ""
         } as any,
