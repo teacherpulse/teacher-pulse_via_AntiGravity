@@ -18,11 +18,11 @@ export type ModuleDefinition = {
 }
 
 export const commonScores: RubricScore[] = [
-    { value: 1, label: "Score 1", description: "Needs significant improvement. Standard not met.", colorClass: "border-red-500 bg-red-50 dark:bg-red-950/20" },
-    { value: 2, label: "Score 2", description: "Below expectations. Inconsistent application.", colorClass: "border-orange-500 bg-orange-50 dark:bg-orange-950/20" },
-    { value: 3, label: "Score 3", description: "Meets basic expectations. Competent but routine.", colorClass: "border-yellow-500 bg-yellow-50 dark:bg-yellow-950/20" },
-    { value: 4, label: "Score 4", description: "Exceeds expectations. High quality and consistent.", colorClass: "border-blue-500 bg-blue-50 dark:bg-blue-950/20" },
-    { value: 5, label: "Score 5", description: "Exceptional. Innovative and sets a benchmark.", colorClass: "border-green-500 bg-green-50 dark:bg-green-950/20" },
+    { value: 1, label: "Score 1", description: "Needs significant improvement. Standard not met.", colorClass: "border-red-500 bg-red-50 dark:bg-red-950/20 text-red-900 dark:text-red-200" },
+    { value: 2, label: "Score 2", description: "Below expectations. Inconsistent application.", colorClass: "border-orange-500 bg-orange-50 dark:bg-orange-950/20 text-orange-900 dark:text-orange-200" },
+    { value: 3, label: "Score 3", description: "Meets basic expectations. Competent but routine.", colorClass: "border-yellow-500 bg-yellow-50 dark:bg-yellow-950/20 text-yellow-900 dark:text-yellow-200" },
+    { value: 4, label: "Score 4", description: "Exceeds expectations. High quality and consistent.", colorClass: "border-blue-500 bg-blue-50 dark:bg-blue-950/20 text-blue-900 dark:text-blue-200" },
+    { value: 5, label: "Score 5", description: "Exceptional. Innovative and sets a benchmark.", colorClass: "border-green-500 bg-green-50 dark:bg-green-950/20 text-green-900 dark:text-green-200" },
 ]
 
 // Helper to generate scores with custom descriptions if needed, otherwise use common
@@ -128,6 +128,17 @@ export const MODULES: ModuleDefinition[] = [
                     { description: "Culture Builder: De-escalates staff conflicts without Principal intervention. Motivates team during high-pressure periods." },
                     { description: "Institutional Pillar: Fully embodies the Principal's vision. Mentors new HODs. Integrity is beyond reproach." }
                 ])
+            },
+            {
+                id: "hod_audit_log",
+                title: "HOD Audit Log (Primary Tool)",
+                scores: getScores([
+                    { description: "Ineffective: Audit Log is empty or vague. No error catches, observations are generic, and no data trends identified." },
+                    { description: "Developing: Log has entries but lacks 'Forensic Accuracy'. Feedback is descriptive. Misses syllabus tracking or root causes." },
+                    { description: "Proficient (SOP): Log contains logical Error Catches and accurate observation remarks. Syllabus exactly on schedule." },
+                    { description: "Strategist: Forensic and detailed audits. Proactively adjusts teaching plans based on weekly test data in the log." },
+                    { description: "Multiplier: Zero operational errors. Log creates high-quality resource banks and eliminates failure through micro-interventions." }
+                ])
             }
         ]
     }
@@ -140,4 +151,11 @@ export const ASSESSMENT_PERIODS = [
     "4 of 6 (Nov)",
     "5 of 6 (Dec)",
     "6 of 6 (Jan)",
+]
+
+export const LEADERSHIP_PERIODS = [
+    "1 of 4 (July)",
+    "2 of 4 (October)",
+    "3 of 4 (January)",
+    "4 of 4 (April)",
 ]

@@ -46,3 +46,72 @@ export const parentData = [
     { id: "1", name: "Raj Singh", studentName: "Arjun Singh", class: "10", section: "A", gender: "Male", mobile: "9876543212", parentPulseScore: 78 },
     { id: "2", name: "Neha Gupta", studentName: "Ananya Gupta", class: "9", section: "B", gender: "Female", mobile: "9876543213", parentPulseScore: 88 },
 ]
+
+export const leadershipAssessments = [
+    {
+        id: "LA-001",
+        hodId: "3",
+        hodName: "VARIKUTI SATHYAM",
+        department: "High School (Grade 6 to 10)",
+        date: "2024-01-15",
+        period: "3 of 4 (January)",
+        scores: {
+            instructional_supervision: 4,
+            operational_rigor: 3,
+            data_driven_strategy: 4,
+            team_culture_integrity: 5,
+            hod_audit_log: 4
+        },
+        avgScore: 80,
+        notes: "Consistent performer. Strong team culture building seen in last month.",
+        auditLog: {
+            errorCatch: "Identified 'Blind Ticking' in Mathematics department for Grade 9 algebra corrections. Teacher was warned and books re-corrected.",
+            observation: "Observed Science teacher. Explained the 'Hands-on First' approach. Taught 1 experiment myself to demonstrate.",
+            data: "Grade 10 prelim results showed 15% weak in geometry. Shifted 4 extra periods to Geometry focus."
+        }
+    },
+    {
+        id: "LA-002",
+        hodId: "11",
+        hodName: "DONTHULA PAVITHRA",
+        department: "Primary (Grade 3 to 5)",
+        date: "2024-01-20",
+        period: "3 of 4 (January)",
+        scores: {
+            instructional_supervision: 2,
+            operational_rigor: 2,
+            data_driven_strategy: 3,
+            team_culture_integrity: 3,
+            hod_audit_log: 2
+        },
+        avgScore: 48,
+        notes: "Needs immediate intervention. Audit log is sparse and forensic accuracy is missing.",
+        auditLog: {
+            errorCatch: "General checks done. Small errors found.",
+            observation: "Teachers are doing well. Need better class control.",
+            data: "Marks are average."
+        }
+    },
+    {
+        id: "LA-003",
+        hodId: "28",
+        hodName: "PANCHEDDULA MAMATHA",
+        department: "Pre Primary",
+        date: "2024-01-22",
+        period: "3 of 4 (January)",
+        scores: {
+            instructional_supervision: 5,
+            operational_rigor: 5,
+            data_driven_strategy: 4,
+            team_culture_integrity: 5,
+            hod_audit_log: 5
+        },
+        avgScore: 96,
+        notes: "Exceptional leadership. Pre-primary department is running autonomously with high excellence.",
+        auditLog: {
+            errorCatch: "Caught 100% of attendance mismatches in nursery wing. Implemented a triple-check system.",
+            observation: "Demonstrated early literacy techniques. Created a new resource bank for phonics.",
+            data: "Nursery literacy scores up by 25%. Eliminating failure through micro-interventions."
+        }
+    }
+]

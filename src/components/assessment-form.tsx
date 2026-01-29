@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ASSESSMENT_PERIODS, MODULES, RubricScore, RubricCriterion, commonScores } from "@/lib/rubrics"
+import { ASSESSMENT_PERIODS, LEADERSHIP_PERIODS, MODULES, RubricScore, RubricCriterion, commonScores } from "@/lib/rubrics"
 import { Profile } from "@/types"
 import { useState } from "react"
 import { CheckCircle2, ChevronLeft, Plus } from "lucide-react"
@@ -115,6 +115,11 @@ export default function AssessmentForm({ teachers, defaultModule, lockModule = f
             return
         }
 
+        if (selectedModuleId === 'almf' && (!auditErrorCatch || !auditObservation || !auditData)) {
+            toast.error("Audit Log Required", { description: "Please fill in all 3 sections of the HOD Audit Log (Error Catch, Observation, Data)." })
+            return
+        }
+
         // Mock Submission - include custom criteria in payload if this were a real API call
         console.log({
             teacherId: selectedTeacherId,
@@ -157,10 +162,10 @@ export default function AssessmentForm({ teachers, defaultModule, lockModule = f
                             <h2 className="text-lg font-semibold">Assessment Details</h2>
 
                             <div className="space-y-2">
-                                <Label>Select Teacher *</Label>
+                                <Label>{selectedModuleId === 'almf' ? "Select HOD *" : "Select Teacher *"}</Label>
                                 <Select onValueChange={setSelectedTeacherId} value={selectedTeacherId}>
                                     <SelectTrigger>
-                                        <SelectValue placeholder="Choose a teacher" />
+                                        <SelectValue placeholder={selectedModuleId === 'almf' ? "Choose an HOD" : "Choose a teacher"} />
                                     </SelectTrigger>
                                     <SelectContent>
                                         {teachers.map(t => (
@@ -232,7 +237,7 @@ export default function AssessmentForm({ teachers, defaultModule, lockModule = f
                                             <SelectValue placeholder="Select period" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {ASSESSMENT_PERIODS.map(p => (
+                                            {(selectedModuleId === 'almf' ? LEADERSHIP_PERIODS : ASSESSMENT_PERIODS).map(p => (
                                                 <SelectItem key={p} value={p}>{p}</SelectItem>
                                             ))}
                                         </SelectContent>
@@ -322,7 +327,7 @@ export default function AssessmentForm({ teachers, defaultModule, lockModule = f
                                                             {isSelected && <CheckCircle2 className="size-3" />}
                                                         </div>
                                                         <div className="flex-1">
-                                                            <span className={cn("font-medium mr-2", isSelected ? "text-foreground" : "text-muted-foreground")}>
+                                                            <span className={cn("font-medium mr-2", isSelected ? "" : "text-muted-foreground")}>
                                                                 {score.label}:
                                                             </span>
                                                             <span className="text-sm">
