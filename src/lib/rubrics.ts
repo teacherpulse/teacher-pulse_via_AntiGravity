@@ -86,24 +86,49 @@ export const MODULES: ModuleDefinition[] = [
         title: "ALMF (Leadership Pulse)",
         criteria: [
             {
-                id: "strategic_vision", title: "Strategic Vision & Planning", scores: getScores([
-                    { description: "Lacks vision. Operates in reactive mode only." },
-                    { description: "Limited vision. Plans are short-term and tactical." },
-                    { description: "Has clear vision aligned with school goals." },
-                    { description: "Proactive vision. Anticipates challenges/opportunities." },
-                    { description: "Inspiring visionary. Transforms department culture." }
+                id: "instructional_supervision",
+                title: "Instructional Supervision (IS)",
+                scores: getScores([
+                    { description: "Absentee Leader: Rarely observes classes. Feedback is vague. No follow-up on previous errors." },
+                    { description: "Passive Observer: Observes required classes but misses root causes. Feedback is descriptive rather than prescriptive." },
+                    { description: "Corrective Supervisor (SOP): Meets observation targets. Identifies HTMF deviations correctly. Ensures Lesson Plans are on time." },
+                    { description: "Developmental Mentor: Demonstrates techniques inside the teacher's class (Model Teaching). Tracks teacher improvement and identifies pedagocial gaps." },
+                    { description: "Transformational Leader: Uses video analysis for feedback. Teachers under this HOD consistently improve pedagogy. Innovation is high." }
                 ])
             },
             {
-                id: "team_development", title: "Team Development & Mentoring", scores: getScores([
-                    { description: "No mentoring. Ignores team growth needs." },
-                    { description: "Occasional advice but lacks structure." },
-                    { description: "Regularly supports team members." },
-                    { description: "Strong mentor. Actively develops talent." },
-                    { description: "Creators of leaders. Exceptional mentorship." }
+                id: "operational_rigor",
+                title: "Operational Rigor (OR)",
+                scores: getScores([
+                    { description: "Negligent: 'Blind Ticking' of Teacher Diaries and Correction samples. Misses syllabus lags. Timetable conflicts." },
+                    { description: "Inconsistent: Checks for completion, not quality. Catches 50% of correction errors. Syllabus tracking is reactive." },
+                    { description: "Accurate Auditor (SOP): 100% detection of 'Blind Ticking'. Diaries checked weekly with meaningful remarks. Syllabus on schedule." },
+                    { description: "System Optimizer: Proactively adjusts timetables. Ensures 'Zero Loss' of student notebooks. Audits are forensic and detailed." },
+                    { description: "Standard Setter: Creates high-quality resource banks that other departments copy. Zero operational errors for the term." }
                 ])
             },
-            // Add more ALMF criteria as needed
+            {
+                id: "data_driven_strategy",
+                title: "Data-Driven Strategy (DDS)",
+                scores: getScores([
+                    { description: "Data Avoider: Blames students/parents for low results. Does not know the 'Fail List' of their department." },
+                    { description: "Data Reporter: Compiles marks sheets but offers no analysis. Conducts remedials without a specific plan." },
+                    { description: "Analyst (SOP): Identifies 'At-Risk' students immediately after exams. Ensures remedials happen. Knows Department Average." },
+                    { description: "Strategist: Groups students by specific learning gaps. Adjusts teaching plans based on weekly test data. Predicts board results with 90% accuracy." },
+                    { description: "Result Architect: Achieves consistent Department Averages >85%. Eliminates failure through 'Micro-Interventions'." }
+                ])
+            },
+            {
+                id: "team_culture_integrity",
+                title: "Team Culture & Integrity (TCI)",
+                scores: getScores([
+                    { description: "Divider: Complains about management to teachers. Engaging in gossip. Fails to enforce school policies." },
+                    { description: "People Pleaser: Avoids difficult conversations with underperforming teachers. 'Protects' team from accountability." },
+                    { description: "Professional Anchor (SOP): Enforces policies neutrally. Conducts meetings with clear agenda. Respectful and punctual." },
+                    { description: "Culture Builder: De-escalates staff conflicts without Principal intervention. Motivates team during high-pressure periods." },
+                    { description: "Institutional Pillar: Fully embodies the Principal's vision. Mentors new HODs. Integrity is beyond reproach." }
+                ])
+            }
         ]
     }
 ]

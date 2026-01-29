@@ -13,6 +13,8 @@ import { CheckCircle2, ChevronLeft, Plus } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
+import { ALMF_ACTION_PLANS, HOD_AUDIT_LOG_REQUIREMENTS } from "@/lib/leadership-guidance"
+import { AlertCircle, Target, Users2, ShieldCheck, FileText, CheckCircle, Info } from "lucide-react"
 
 interface AssessmentFormProps {
     teachers: Profile[]
@@ -37,6 +39,11 @@ export default function AssessmentForm({ teachers, defaultModule, lockModule = f
     const [isAddingCriterion, setIsAddingCriterion] = useState(false)
     const [newCriterionTitle, setNewCriterionTitle] = useState("")
 
+    // ALMF Specific State
+    const [auditErrorCatch, setAuditErrorCatch] = useState("")
+    const [auditObservation, setAuditObservation] = useState("")
+    const [auditData, setAuditData] = useState("")
+
     const selectedModule = MODULES.find(m => m.id === selectedModuleId)
 
     // Combine static and custom criteria
@@ -48,6 +55,34 @@ export default function AssessmentForm({ teachers, defaultModule, lockModule = f
     const totalScore = Object.values(scores).reduce((a, b) => a + b, 0)
     const maxScore = totalCriteria * 5
     const percentage = maxScore > 0 ? Math.round((totalScore / maxScore) * 100) : 0
+    const averageScore = totalCriteria > 0 ? totalScore / totalCriteria : 0
+
+    const selectedTeacher = teachers.find(t => t.id === selectedTeacherId)
+
+    const getClassOptions = () => {
+        if (!selectedTeacherId || !selectedTeacher) return []
+
+        const dept = selectedTeacher.department
+        if (dept === "Pre Primary") return ["Nursery", "LKG", "UKG"]
+        if (dept === "Foundational Primary") return ["Nursery", "LKG", "UKG", "Grade 1", "Grade 2"]
+        if (dept === "Grade 1 & 2") return ["Grade 1", "Grade 2"]
+        if (dept === "Primary (Grade 3 to 5)") return ["Grade 3", "Grade 4", "Grade 5"]
+        if (dept === "High School (Grade 6 to 10)") return ["Grade 6", "Grade 7", "Grade 8", "Grade 9", "Grade 10"]
+
+        // Fallback for Management or others: show all for now
+        return ["Nursery", "LKG", "UKG", ...[...Array(10)].map((_, i) => `Grade ${i + 1}`)]
+    }
+
+    const classOptions = getClassOptions()
+
+    const getActionPlan = () => {
+        if (!selectedModuleId || selectedModuleId !== 'almf') return null;
+        if (averageScore < 2.5) return ALMF_ACTION_PLANS[0];
+        if (averageScore < 3.5) return ALMF_ACTION_PLANS[1];
+        return ALMF_ACTION_PLANS[2];
+    }
+
+    const actionPlan = getActionPlan();
 
     const handleScoreSelect = (criteriaId: string, value: number) => {
         setScores(prev => ({
@@ -144,12 +179,13 @@ export default function AssessmentForm({ teachers, defaultModule, lockModule = f
                                                 <SelectValue placeholder="Select class" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="nursery">Nursery</SelectItem>
-                                                <SelectItem value="lkg">LKG</SelectItem>
-                                                <SelectItem value="ukg">UKG</SelectItem>
-                                                {[...Array(10)].map((_, i) => (
-                                                    <SelectItem key={i + 1} value={`grade-${i + 1}`}>Grade {i + 1}</SelectItem>
-                                                ))}
+                                                {classOptions.length > 0 ? (
+                                                    classOptions.map(opt => (
+                                                        <SelectItem key={opt} value={opt.toLowerCase().replace(" ", "-")}>{opt}</SelectItem>
+                                                    ))
+                                                ) : (
+                                                    <div className="p-2 text-xs text-muted-foreground">Select a teacher first</div>
+                                                )}
                                             </SelectContent>
                                         </Select>
                                     </div>
@@ -213,6 +249,45 @@ export default function AssessmentForm({ teachers, defaultModule, lockModule = f
                                     onChange={(e) => setNotes(e.target.value)}
                                 />
                             </div>
+
+                            {selectedModuleId === 'almf' && (
+                                <div className="space-y-6 pt-6 border-t animate-in fade-in">
+                                    <div className="flex items-center gap-2">
+                                        <FileText className="size-5 text-primary" />
+                                        <h3 className="text-lg font-semibold">HOD Audit Log (Primary Tool)</h3>
+                                    </div>
+                                    <p className="text-sm text-muted-foreground italic -mt-4">
+                                        To assess the HOD, the Principal must check the HOD's Audit Log for forensic accuracy.
+                                    </p>
+
+                                    <div className="grid gap-4">
+                                        <div className="space-y-2">
+                                            <Label className="flex items-center gap-2">1. The Error Catch <span className="text-destructive">*</span></Label>
+                                            <Textarea
+                                                placeholder={HOD_AUDIT_LOG_REQUIREMENTS[0].description}
+                                                value={auditErrorCatch}
+                                                onChange={(e) => setAuditErrorCatch(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label className="flex items-center gap-2">2. The Observation <span className="text-destructive">*</span></Label>
+                                            <Textarea
+                                                placeholder={HOD_AUDIT_LOG_REQUIREMENTS[1].description}
+                                                value={auditObservation}
+                                                onChange={(e) => setAuditObservation(e.target.value)}
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label className="flex items-center gap-2">3. The Data <span className="text-destructive">*</span></Label>
+                                            <Textarea
+                                                placeholder={HOD_AUDIT_LOG_REQUIREMENTS[2].description}
+                                                value={auditData}
+                                                onChange={(e) => setAuditData(e.target.value)}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
                         </CardContent>
                     </Card>
 
@@ -323,6 +398,53 @@ export default function AssessmentForm({ teachers, defaultModule, lockModule = f
                             </Button>
                         </CardContent>
                     </Card>
+
+                    {actionPlan && (
+                        <Card className="border-primary/20 bg-primary/5 shadow-none animate-in slide-in-from-right-4">
+                            <CardContent className="p-6 space-y-4">
+                                <div className="flex items-center gap-2 text-primary">
+                                    <Target className="size-5" />
+                                    <h3 className="font-bold">Prescriptive Action Plan</h3>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <div>
+                                        <h4 className="text-sm font-semibold mb-2 flex items-center gap-1.5">
+                                            <Users2 className="size-3.5" /> HOD Actions ({actionPlan.scoreRange})
+                                        </h4>
+                                        <ul className="text-xs space-y-1.5 list-disc pl-4 text-muted-foreground">
+                                            {actionPlan.hodActions.map((action, i) => (
+                                                <li key={i}>{action}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+
+                                    <div>
+                                        <h4 className="text-sm font-semibold mb-2 flex items-center gap-1.5">
+                                            <ShieldCheck className="size-3.5" /> Management Actions
+                                        </h4>
+                                        <ul className="text-xs space-y-1.5 list-disc pl-4 text-muted-foreground">
+                                            {actionPlan.managementActions.map((action, i) => (
+                                                <li key={i}>{action}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </CardContent>
+                        </Card>
+                    )}
+
+                    {selectedModuleId === 'almf' && (
+                        <Card className="bg-muted/30 border-none shadow-none">
+                            <CardContent className="p-4 text-xs text-muted-foreground space-y-2">
+                                <div className="flex items-center gap-1.5 font-semibold text-foreground">
+                                    <Info className="size-3.5" />
+                                    ALMF Philosophy
+                                </div>
+                                <p>The HOD is the "Quality Assurance Engine". Their primary role is ensuring standards are executed faithfully by every teacher.</p>
+                            </CardContent>
+                        </Card>
+                    )}
                 </div>
             </div>
         </div>
