@@ -18,9 +18,10 @@ interface AssessmentFormProps {
     teachers: Profile[]
     defaultModule?: string
     lockModule?: boolean
+    allowCustomCriteria?: boolean
 }
 
-export default function AssessmentForm({ teachers, defaultModule, lockModule = false }: AssessmentFormProps) {
+export default function AssessmentForm({ teachers, defaultModule, lockModule = false, allowCustomCriteria = true }: AssessmentFormProps) {
     const router = useRouter()
 
     // Form State
@@ -240,31 +241,33 @@ export default function AssessmentForm({ teachers, defaultModule, lockModule = f
                             ))}
 
                             {/* Add Custom Criterion Section */}
-                            <Card className="border-dashed border-2">
-                                <CardContent className="p-6 flex flex-col items-center justify-center text-center space-y-4">
-                                    {isAddingCriterion ? (
-                                        <div className="w-full max-w-md space-y-4">
-                                            <div className="space-y-2">
-                                                <Label>New Criterion Title</Label>
-                                                <Input
-                                                    value={newCriterionTitle}
-                                                    onChange={(e) => setNewCriterionTitle(e.target.value)}
-                                                    placeholder="e.g. Stakeholder Management"
-                                                    autoFocus
-                                                />
+                            {allowCustomCriteria && (
+                                <Card className="border-dashed border-2">
+                                    <CardContent className="p-6 flex flex-col items-center justify-center text-center space-y-4">
+                                        {isAddingCriterion ? (
+                                            <div className="w-full max-w-md space-y-4">
+                                                <div className="space-y-2">
+                                                    <Label>New Criterion Title</Label>
+                                                    <Input
+                                                        value={newCriterionTitle}
+                                                        onChange={(e) => setNewCriterionTitle(e.target.value)}
+                                                        placeholder="e.g. Stakeholder Management"
+                                                        autoFocus
+                                                    />
+                                                </div>
+                                                <div className="flex gap-2 justify-end">
+                                                    <Button variant="outline" onClick={() => setIsAddingCriterion(false)}>Cancel</Button>
+                                                    <Button onClick={handleAddCriterion}>Add Criterion</Button>
+                                                </div>
                                             </div>
-                                            <div className="flex gap-2 justify-end">
-                                                <Button variant="outline" onClick={() => setIsAddingCriterion(false)}>Cancel</Button>
-                                                <Button onClick={handleAddCriterion}>Add Criterion</Button>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <Button variant="secondary" onClick={() => setIsAddingCriterion(true)} className="w-full">
-                                            <Plus className="mr-2 h-4 w-4" /> Add Custom Criterion
-                                        </Button>
-                                    )}
-                                </CardContent>
-                            </Card>
+                                        ) : (
+                                            <Button variant="secondary" onClick={() => setIsAddingCriterion(true)} className="w-full">
+                                                <Plus className="mr-2 h-4 w-4" /> Add Custom Criterion
+                                            </Button>
+                                        )}
+                                    </CardContent>
+                                </Card>
+                            )}
                         </div>
                     )}
                 </div>
