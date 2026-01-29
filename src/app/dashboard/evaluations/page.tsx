@@ -1,3 +1,6 @@
+import Link from "next/link"
+import { Plus } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import { DataTable } from "@/components/data-table"
 import { columns } from "../staff/columns" // Re-use staff columns for now
 import {
@@ -40,9 +43,14 @@ export default async function EvaluationsPage() {
 
     return (
         <div className="space-y-6">
-            <div>
-                <h1 className="text-3xl font-bold tracking-tight font-heading">Teacher Pulse</h1>
-                <p className="text-muted-foreground">Manage ongoing teacher evaluations and performance reviews.</p>
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight font-heading">Teacher Pulse</h1>
+                    <p className="text-muted-foreground">Manage ongoing teacher evaluations and performance reviews.</p>
+                </div>
+                <Link href="/dashboard/evaluations/new">
+                    <Button><Plus className="mr-2 h-4 w-4" /> Create Assessment</Button>
+                </Link>
             </div>
 
             {/* Dashboard Summary Cards */}

@@ -28,6 +28,7 @@ export default function AssessmentForm({ teachers, defaultModule, lockModule = f
     const [selectedTeacherId, setSelectedTeacherId] = useState<string>("")
     const [selectedModuleId, setSelectedModuleId] = useState<string>(defaultModule || "")
     const [selectedPeriod, setSelectedPeriod] = useState<string>("")
+    const [classLevel, setClassLevel] = useState<string>("")
     const [section, setSection] = useState<string>("")
     const [notes, setNotes] = useState<string>("")
     const [scores, setScores] = useState<Record<string, number>>({})
@@ -135,6 +136,38 @@ export default function AssessmentForm({ teachers, defaultModule, lockModule = f
 
                             <div className="grid gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
+                                    <Label>Class Level *</Label>
+                                    <Select onValueChange={setClassLevel} value={classLevel}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select class" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="nursery">Nursery</SelectItem>
+                                            <SelectItem value="lkg">LKG</SelectItem>
+                                            <SelectItem value="ukg">UKG</SelectItem>
+                                            {[...Array(10)].map((_, i) => (
+                                                <SelectItem key={i + 1} value={`grade-${i + 1}`}>Grade {i + 1}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                                <div className="space-y-2">
+                                    <Label>Section *</Label>
+                                    <Select onValueChange={setSection} value={section}>
+                                        <SelectTrigger>
+                                            <SelectValue placeholder="Select section" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="A">Section A</SelectItem>
+                                            <SelectItem value="B">Section B</SelectItem>
+                                            <SelectItem value="C">Section C</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                </div>
+                            </div>
+
+                            <div className="grid gap-4 md:grid-cols-2">
+                                <div className="space-y-2">
                                     <Label>Module *</Label>
                                     {lockModule && selectedModule ? (
                                         <div className="p-3 border rounded-md bg-muted text-muted-foreground font-medium">
@@ -154,32 +187,18 @@ export default function AssessmentForm({ teachers, defaultModule, lockModule = f
                                     )}
                                 </div>
                                 <div className="space-y-2">
-                                    <Label>Section *</Label>
-                                    <Select onValueChange={setSection} value={section}>
+                                    <Label>Assessment Period</Label>
+                                    <Select onValueChange={setSelectedPeriod} value={selectedPeriod}>
                                         <SelectTrigger>
-                                            <SelectValue placeholder="Select section" />
+                                            <SelectValue placeholder="Select period" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="scholars">Scholars</SelectItem>
-                                            <SelectItem value="leaders">Leaders</SelectItem>
-                                            <SelectItem value="champions">Champions</SelectItem>
+                                            {ASSESSMENT_PERIODS.map(p => (
+                                                <SelectItem key={p} value={p}>{p}</SelectItem>
+                                            ))}
                                         </SelectContent>
                                     </Select>
                                 </div>
-                            </div>
-
-                            <div className="space-y-2">
-                                <Label>Assessment Period</Label>
-                                <Select onValueChange={setSelectedPeriod} value={selectedPeriod}>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder="Select period" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {ASSESSMENT_PERIODS.map(p => (
-                                            <SelectItem key={p} value={p}>{p}</SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
                             </div>
 
                             <div className="space-y-2">
