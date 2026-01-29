@@ -61,13 +61,27 @@ const data = {
     ],
 }
 
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+    userRole?: string
+}
+
+export function AppSidebar({ userRole = 'teacher', ...props }: AppSidebarProps) {
     const router = useRouter()
     const supabase = createClient()
 
     const handleSignOut = async () => {
         await supabase.auth.signOut()
         router.refresh()
+    }
+
+    // Insert Leadership Pulse for Admins
+    const navItems = [...data.navMain]
+    if (userRole === 'admin') {
+        navItems.splice(2, 0, {
+            title: "Leadership Pulse",
+            url: "/dashboard/leadership",
+            icon: BookOpen,
+        })
     }
 
     return (
@@ -89,7 +103,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarHeader>
             <SidebarContent>
                 <SidebarMenu>
-                    {data.navMain.map((item) => (
+                    {navItems.map((item) => (
                         <SidebarMenuItem key={item.title}>
                             <SidebarMenuButton asChild tooltip={item.title}>
                                 <a href={item.url}>
