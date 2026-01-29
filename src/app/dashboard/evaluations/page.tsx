@@ -2,7 +2,7 @@ import Link from "next/link"
 import { Plus } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { DataTable } from "@/components/data-table"
-import { columns } from "../staff/columns" // Re-use staff columns for now
+import { columns } from "../teachers/columns" // Re-use teacher columns for now
 import {
     Card,
     CardContent,

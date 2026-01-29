@@ -44,12 +44,12 @@ async function getData(): Promise<Profile[]> {
 // @ts-ignore
 export const dynamic = 'force-dynamic'
 
-export default async function StaffPage() {
+export default async function TeacherPage() {
     const data = await getData()
 
     return (
         <div className="container mx-auto py-10">
-            <h1 className="text-3xl font-bold font-heading mb-6 tracking-tight">Staff Directory</h1>
+            <h1 className="text-3xl font-bold font-heading mb-6 tracking-tight">Teacher Directory</h1>
             <DataTable columns={columns} data={data} />
         </div>
     )

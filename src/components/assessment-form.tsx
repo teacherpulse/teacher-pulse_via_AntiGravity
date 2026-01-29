@@ -19,9 +19,10 @@ interface AssessmentFormProps {
     defaultModule?: string
     lockModule?: boolean
     allowCustomCriteria?: boolean
+    showClassDetails?: boolean
 }
 
-export default function AssessmentForm({ teachers, defaultModule, lockModule = false, allowCustomCriteria = true }: AssessmentFormProps) {
+export default function AssessmentForm({ teachers, defaultModule, lockModule = false, allowCustomCriteria = true, showClassDetails = true }: AssessmentFormProps) {
     const router = useRouter()
 
     // Form State
@@ -134,37 +135,39 @@ export default function AssessmentForm({ teachers, defaultModule, lockModule = f
                                 </Select>
                             </div>
 
-                            <div className="grid gap-4 md:grid-cols-2">
-                                <div className="space-y-2">
-                                    <Label>Class Level *</Label>
-                                    <Select onValueChange={setClassLevel} value={classLevel}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select class" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="nursery">Nursery</SelectItem>
-                                            <SelectItem value="lkg">LKG</SelectItem>
-                                            <SelectItem value="ukg">UKG</SelectItem>
-                                            {[...Array(10)].map((_, i) => (
-                                                <SelectItem key={i + 1} value={`grade-${i + 1}`}>Grade {i + 1}</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                            {showClassDetails && (
+                                <div className="grid gap-4 md:grid-cols-2">
+                                    <div className="space-y-2">
+                                        <Label>Class Level *</Label>
+                                        <Select onValueChange={setClassLevel} value={classLevel}>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select class" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="nursery">Nursery</SelectItem>
+                                                <SelectItem value="lkg">LKG</SelectItem>
+                                                <SelectItem value="ukg">UKG</SelectItem>
+                                                {[...Array(10)].map((_, i) => (
+                                                    <SelectItem key={i + 1} value={`grade-${i + 1}`}>Grade {i + 1}</SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label>Section *</Label>
+                                        <Select onValueChange={setSection} value={section}>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select section" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                <SelectItem value="A">Section A</SelectItem>
+                                                <SelectItem value="B">Section B</SelectItem>
+                                                <SelectItem value="C">Section C</SelectItem>
+                                            </SelectContent>
+                                        </Select>
+                                    </div>
                                 </div>
-                                <div className="space-y-2">
-                                    <Label>Section *</Label>
-                                    <Select onValueChange={setSection} value={section}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select section" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="A">Section A</SelectItem>
-                                            <SelectItem value="B">Section B</SelectItem>
-                                            <SelectItem value="C">Section C</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                            </div>
+                            )}
 
                             <div className="grid gap-4 md:grid-cols-2">
                                 <div className="space-y-2">

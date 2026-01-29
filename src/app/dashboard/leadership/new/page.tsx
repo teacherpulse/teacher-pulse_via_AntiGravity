@@ -29,6 +29,6 @@ export default async function NewLeadershipEvaluationPage() {
     }
 
     return (
-        <AssessmentForm teachers={hods || []} defaultModule="almf" lockModule={true} allowCustomCriteria={false} />
+        <AssessmentForm teachers={hods || []} defaultModule="almf" lockModule={true} allowCustomCriteria={false} showClassDetails={false} />
     )
 }
