@@ -68,8 +68,8 @@ export default function StudentsPage() {
         <div className="space-y-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold tracking-tight">Vidya Pulse Directory</h1>
-                    <p className="text-muted-foreground">Manage students and track behavioral diagnostics.</p>
+                    <h1 className="text-3xl font-bold tracking-tight">Vidya Pulse</h1>
+                    <p className="text-muted-foreground">Student diagnostics and behavioral tracking.</p>
                 </div>
                 <Dialog open={open} onOpenChange={setOpen}>
                     <DialogTrigger asChild>
@@ -117,6 +117,31 @@ export default function StudentsPage() {
                         <Button onClick={handleCreate}>Save Student</Button>
                     </DialogContent>
                 </Dialog>
+            </div>
+
+            {/* Dashboard Summary Cards */}
+            <div className="grid gap-4 md:grid-cols-3">
+                <div className="rounded-xl border bg-card text-card-foreground shadow p-6">
+                    <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <h3 className="tracking-tight text-sm font-medium">Total Students</h3>
+                    </div>
+                    <div className="text-2xl font-bold">{students.length}</div>
+                    <p className="text-xs text-muted-foreground">Registered in database</p>
+                </div>
+                <div className="rounded-xl border bg-card text-card-foreground shadow p-6">
+                    <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <h3 className="tracking-tight text-sm font-medium">Flagged for Review</h3>
+                    </div>
+                    <div className="text-2xl font-bold">--</div>
+                    <p className="text-xs text-muted-foreground">Behavioral alerts</p>
+                </div>
+                <div className="rounded-xl border bg-card text-card-foreground shadow p-6">
+                    <div className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <h3 className="tracking-tight text-sm font-medium">Reports Generated</h3>
+                    </div>
+                    <div className="text-2xl font-bold">--</div>
+                    <p className="text-xs text-muted-foreground">This term</p>
+                </div>
             </div>
 
             <DataTable columns={columns} data={students} />

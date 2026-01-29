@@ -41,17 +41,46 @@ export default async function EvaluationsPage() {
     return (
         <div className="space-y-6">
             <div>
-                <h1 className="text-3xl font-bold tracking-tight font-heading">Evaluations</h1>
-                <p className="text-muted-foreground">Select a teacher to start a new evaluation module.</p>
+                <h1 className="text-3xl font-bold tracking-tight font-heading">Teacher Pulse</h1>
+                <p className="text-muted-foreground">Manage ongoing teacher evaluations and performance reviews.</p>
             </div>
 
-            {/* In a real app, clicking a row here would go to Teacher Detail -> Start Eval */}
-            {/* For this MVP, let's just show a clear "Start Evaluation" button or link */}
+            {/* Dashboard Summary Cards */}
+            <div className="grid gap-4 md:grid-cols-3">
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-sm font-medium">Total Evaluations</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">--</div>
+                        <p className="text-xs text-muted-foreground">For current term</p>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-sm font-medium">Pending Reviews</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">--</div>
+                        <p className="text-xs text-muted-foreground">Action required</p>
+                    </CardContent>
+                </Card>
+                <Card>
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-sm font-medium">Average Score</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">--</div>
+                        <p className="text-xs text-muted-foreground">School-wide average</p>
+                    </CardContent>
+                </Card>
+            </div>
 
+            {/* List Section */}
             <Card>
                 <CardHeader>
-                    <CardTitle>Teachers Pending Evaluation</CardTitle>
-                    <CardDescription>Term 1 2025</CardDescription>
+                    <CardTitle>Recent Evaluations</CardTitle>
+                    <CardDescription>Teachers pending or recently evaluated</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <DataTable columns={columns} data={data} />

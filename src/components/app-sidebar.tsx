@@ -29,7 +29,7 @@ import { useRouter } from "next/navigation"
 const data = {
     navMain: [
         {
-            title: "Overview",
+            title: "Main Dashboard",
             url: "/dashboard",
             icon: LayoutDashboard,
         },
@@ -39,18 +39,23 @@ const data = {
             icon: Users,
         },
         {
-            title: "Evaluations",
+            title: "Teacher Pulse",
             url: "/dashboard/evaluations",
             icon: BookOpen,
         },
         {
-            title: "Vidya Pulse (Students)",
+            title: "Vidya Pulse",
             url: "/dashboard/students",
+            icon: GraduationCap,
+        },
+        {
+            title: "Parent Pulse",
+            url: "/dashboard/parent-pulse",
             icon: Users,
         },
         {
-            title: "My Growth",
-            url: "/dashboard/growth",
+            title: "Reports",
+            url: "/dashboard/reports",
             icon: LineChart,
         },
     ],
