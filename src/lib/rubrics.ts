@@ -17,7 +17,7 @@ export type ModuleDefinition = {
     criteria: RubricCriterion[];
 }
 
-const commonScores: RubricScore[] = [
+export const commonScores: RubricScore[] = [
     { value: 1, label: "Score 1", description: "Needs significant improvement. Standard not met.", colorClass: "border-red-500 bg-red-50 dark:bg-red-950/20" },
     { value: 2, label: "Score 2", description: "Below expectations. Inconsistent application.", colorClass: "border-orange-500 bg-orange-50 dark:bg-orange-950/20" },
     { value: 3, label: "Score 3", description: "Meets basic expectations. Competent but routine.", colorClass: "border-yellow-500 bg-yellow-50 dark:bg-yellow-950/20" },

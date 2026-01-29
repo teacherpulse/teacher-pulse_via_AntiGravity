@@ -4,34 +4,43 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
+import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ASSESSMENT_PERIODS, MODULES, RubricScore } from "@/lib/rubrics"
+import { ASSESSMENT_PERIODS, MODULES, RubricScore, RubricCriterion, commonScores } from "@/lib/rubrics"
 import { Profile } from "@/types"
 import { useState } from "react"
-import { CheckCircle2, ChevronLeft } from "lucide-react"
+import { CheckCircle2, ChevronLeft, Plus } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 import { cn } from "@/lib/utils"
 
 interface AssessmentFormProps {
     teachers: Profile[]
+    defaultModule?: string
+    lockModule?: boolean
 }
 
-export default function AssessmentForm({ teachers }: AssessmentFormProps) {
+export default function AssessmentForm({ teachers, defaultModule, lockModule = false }: AssessmentFormProps) {
     const router = useRouter()
 
     // Form State
     const [selectedTeacherId, setSelectedTeacherId] = useState<string>("")
-    const [selectedModuleId, setSelectedModuleId] = useState<string>("")
+    const [selectedModuleId, setSelectedModuleId] = useState<string>(defaultModule || "")
     const [selectedPeriod, setSelectedPeriod] = useState<string>("")
     const [section, setSection] = useState<string>("")
     const [notes, setNotes] = useState<string>("")
     const [scores, setScores] = useState<Record<string, number>>({})
+    const [customCriteria, setCustomCriteria] = useState<RubricCriterion[]>([])
+    const [isAddingCriterion, setIsAddingCriterion] = useState(false)
+    const [newCriterionTitle, setNewCriterionTitle] = useState("")
 
     const selectedModule = MODULES.find(m => m.id === selectedModuleId)
 
+    // Combine static and custom criteria
+    const allCriteria = selectedModule ? [...selectedModule.criteria, ...customCriteria] : []
+
     // Derived State
-    const totalCriteria = selectedModule?.criteria.length || 0
+    const totalCriteria = allCriteria.length
     const answeredCriteria = Object.keys(scores).length
     const totalScore = Object.values(scores).reduce((a, b) => a + b, 0)
     const maxScore = totalCriteria * 5
@@ -44,6 +53,20 @@ export default function AssessmentForm({ teachers }: AssessmentFormProps) {
         }))
     }
 
+    const handleAddCriterion = () => {
+        if (!newCriterionTitle.trim()) return
+
+        const newCriterion: RubricCriterion = {
+            id: `custom_${Date.now()}`,
+            title: newCriterionTitle,
+            scores: commonScores // Using default scores for now
+        }
+
+        setCustomCriteria([...customCriteria, newCriterion])
+        setNewCriterionTitle("")
+        setIsAddingCriterion(false)
+    }
+
     const handleSubmit = async () => {
         if (!selectedTeacherId || !selectedModuleId || !selectedPeriod) {
             toast.error("Missing Details", { description: "Please fill in all required fields." })
@@ -54,7 +77,15 @@ export default function AssessmentForm({ teachers }: AssessmentFormProps) {
             return
         }
 
-        // Mock Submission
+        // Mock Submission - include custom criteria in payload if this were a real API call
+        console.log({
+            teacherId: selectedTeacherId,
+            moduleId: selectedModuleId,
+            period: selectedPeriod,
+            scores,
+            customCriteria // Backend would need to save these definitions
+        })
+
         toast.promise(
             new Promise((resolve) => setTimeout(resolve, 1000)),
             {
@@ -104,16 +135,22 @@ export default function AssessmentForm({ teachers }: AssessmentFormProps) {
                             <div className="grid gap-4 md:grid-cols-2">
                                 <div className="space-y-2">
                                     <Label>Module *</Label>
-                                    <Select onValueChange={setSelectedModuleId} value={selectedModuleId}>
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Choose a module" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {MODULES.map(m => (
-                                                <SelectItem key={m.id} value={m.id}>{m.title}</SelectItem>
-                                            ))}
-                                        </SelectContent>
-                                    </Select>
+                                    {lockModule && selectedModule ? (
+                                        <div className="p-3 border rounded-md bg-muted text-muted-foreground font-medium">
+                                            {selectedModule.title}
+                                        </div>
+                                    ) : (
+                                        <Select onValueChange={setSelectedModuleId} value={selectedModuleId} disabled={lockModule}>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Choose a module" />
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {MODULES.map(m => (
+                                                    <SelectItem key={m.id} value={m.id}>{m.title}</SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                    )}
                                 </div>
                                 <div className="space-y-2">
                                     <Label>Section *</Label>
@@ -160,11 +197,11 @@ export default function AssessmentForm({ teachers }: AssessmentFormProps) {
                     {selectedModule && (
                         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
                             <div className="flex items-center justify-between">
-                                <h2 className="text-xl font-semibold">Evaluation Criteria ({selectedModule.criteria.length})</h2>
+                                <h2 className="text-xl font-semibold">Evaluation Criteria ({allCriteria.length})</h2>
                                 <p className="text-sm text-muted-foreground">Rate each criterion on a scale of 1-5</p>
                             </div>
 
-                            {selectedModule.criteria.map((criterion, index) => (
+                            {allCriteria.map((criterion, index) => (
                                 <Card key={criterion.id} className="overflow-hidden">
                                     <CardContent className="p-6">
                                         <h3 className="font-semibold text-lg mb-4 text-primary">{index + 1}. {criterion.title}</h3>
@@ -201,6 +238,33 @@ export default function AssessmentForm({ teachers }: AssessmentFormProps) {
                                     </CardContent>
                                 </Card>
                             ))}
+
+                            {/* Add Custom Criterion Section */}
+                            <Card className="border-dashed border-2">
+                                <CardContent className="p-6 flex flex-col items-center justify-center text-center space-y-4">
+                                    {isAddingCriterion ? (
+                                        <div className="w-full max-w-md space-y-4">
+                                            <div className="space-y-2">
+                                                <Label>New Criterion Title</Label>
+                                                <Input
+                                                    value={newCriterionTitle}
+                                                    onChange={(e) => setNewCriterionTitle(e.target.value)}
+                                                    placeholder="e.g. Stakeholder Management"
+                                                    autoFocus
+                                                />
+                                            </div>
+                                            <div className="flex gap-2 justify-end">
+                                                <Button variant="outline" onClick={() => setIsAddingCriterion(false)}>Cancel</Button>
+                                                <Button onClick={handleAddCriterion}>Add Criterion</Button>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <Button variant="secondary" onClick={() => setIsAddingCriterion(true)} className="w-full">
+                                            <Plus className="mr-2 h-4 w-4" /> Add Custom Criterion
+                                        </Button>
+                                    )}
+                                </CardContent>
+                            </Card>
                         </div>
                     )}
                 </div>

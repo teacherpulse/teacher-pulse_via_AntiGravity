@@ -39,6 +39,11 @@ const data = {
             icon: Users,
         },
         {
+            title: "Leadership Pulse",
+            url: "/dashboard/leadership",
+            icon: BookOpen,
+        },
+        {
             title: "Teacher Pulse",
             url: "/dashboard/evaluations",
             icon: BookOpen,
@@ -74,15 +79,7 @@ export function AppSidebar({ userRole = 'teacher', ...props }: AppSidebarProps) 
         router.refresh()
     }
 
-    // Insert Leadership Pulse for Admins
     const navItems = [...data.navMain]
-    if (userRole === 'admin') {
-        navItems.splice(2, 0, {
-            title: "Leadership Pulse",
-            url: "/dashboard/leadership",
-            icon: BookOpen,
-        })
-    }
 
     return (
         <Sidebar collapsible="icon" {...props}>
