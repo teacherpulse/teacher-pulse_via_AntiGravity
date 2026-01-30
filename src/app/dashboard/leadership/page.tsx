@@ -80,7 +80,7 @@ export default function LeadershipPage() {
                         </CardTitle>
                         <CardDescription>Aggregate Average of All HODs</CardDescription>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="animate-heartbeat">
                         <div className="flex items-baseline gap-2">
                             <span className="text-4xl font-extrabold text-primary">{overallAvg}%</span>
                             <span className="text-sm text-green-500 font-medium">↑ 3.2% vs last term</span>
@@ -92,7 +92,7 @@ export default function LeadershipPage() {
                     <CardHeader className="pb-2">
                         <CardTitle className="text-sm font-medium text-muted-foreground">Total HODs</CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="animate-heartbeat">
                         <div className="text-2xl font-bold flex items-center gap-2">
                             <Users className="h-5 w-5 text-muted-foreground" />
                             {hods.length}
@@ -113,7 +113,7 @@ export default function LeadershipPage() {
                                         <CardTitle className="text-base group-hover:text-primary transition-colors">{hod.full_name}</CardTitle>
                                         <CardDescription className="text-xs line-clamp-1">{hod.department}</CardDescription>
                                     </div>
-                                    <div className="text-right">
+                                    <div className="text-right animate-heartbeat">
                                         <div className="text-xl font-bold text-primary">{hod.avgScore}%</div>
                                         <div className="text-[10px] text-muted-foreground">Avg Score</div>
                                     </div>

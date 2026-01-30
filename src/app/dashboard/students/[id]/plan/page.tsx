@@ -91,7 +91,7 @@ export default function StudentPlanPage({ params }: { params: Promise<{ id: stri
                         </div>
                         <div className="text-right">
                             <div className="text-sm text-muted-foreground">Evaluation Date</div>
-                            <div className="font-semibold">{new Date(evaluation.evaluation_date).toLocaleDateString()}</div>
+                            <div className="font-semibold text-lg">{new Date(evaluation.evaluation_date).toLocaleDateString('en-GB').replace(/\//g, '-')}</div>
                         </div>
                     </div>
                 </CardHeader>

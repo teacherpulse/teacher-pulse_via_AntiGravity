@@ -88,7 +88,7 @@ export default function DashboardPage() {
     return (
         <div className="space-y-8 animate-in fade-in duration-500">
             <div>
-                <h1 className="text-3xl font-bold tracking-tight font-heading text-primary">Executive Dashboard</h1>
+                <h1 className="text-3xl font-bold tracking-tight font-heading text-primary">Master Dashboard</h1>
                 <p className="text-muted-foreground">Real-time overview of school performance and stakeholder engagement.</p>
             </div>
 
@@ -103,7 +103,7 @@ export default function DashboardPage() {
                         <CardTitle className="text-sm font-medium">School Pulse</CardTitle>
                         <Activity className="h-4 w-4 text-primary" />
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="animate-heartbeat">
                         <div className="text-3xl font-bold text-primary">{schoolPulse}%</div>
                         <p className="text-xs text-muted-foreground mt-1">
                             Aggregate Score
@@ -123,7 +123,7 @@ export default function DashboardPage() {
                         <CardTitle className="text-sm font-medium">Total Teachers</CardTitle>
                         <BookOpen className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="animate-heartbeat">
                         <div className="text-3xl font-bold">{totalTeachers}</div>
                         <p className="text-xs text-muted-foreground mt-1">
                             Faculty members
@@ -141,7 +141,7 @@ export default function DashboardPage() {
                         <CardTitle className="text-sm font-medium">Total Students</CardTitle>
                         <GraduationCap className="h-4 w-4 text-green-600 dark:text-green-400" />
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="animate-heartbeat">
                         <div className="text-3xl font-bold">{totalStudents}</div>
                         <p className="text-xs text-muted-foreground mt-1">
                             Enrolled students
@@ -159,7 +159,7 @@ export default function DashboardPage() {
                         <CardTitle className="text-sm font-medium">Total Parents</CardTitle>
                         <Users className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="animate-heartbeat">
                         <div className="text-3xl font-bold">{totalParents}</div>
                         <p className="text-xs text-muted-foreground mt-1">
                             Connected guardians

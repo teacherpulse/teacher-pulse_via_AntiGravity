@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react"
 import { useTheme } from "next-themes"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -23,6 +24,12 @@ const themes = [
 
 export default function SettingsPage() {
     const { theme, setTheme } = useTheme()
+    const [mounted, setMounted] = useState(false)
+
+    // Avoid hydration mismatch
+    useEffect(() => {
+        setMounted(true)
+    }, [])
 
     return (
         <div className="space-y-8 animate-in fade-in duration-500">
@@ -35,26 +42,29 @@ export default function SettingsPage() {
             <div className="space-y-4">
                 <h2 className="text-xl font-semibold">Theory of Design</h2>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                    {themes.map((t) => (
-                        <div
-                            key={t.id}
-                            className={`cursor-pointer group relative rounded-xl border-2 transition-all duration-300 overflow-hidden ${theme === t.id ? "border-primary ring-2 ring-primary/20 scale-[1.02]" : "border-transparent hover:border-primary/50"
-                                }`}
-                            onClick={() => setTheme(t.id)}
-                        >
-                            <div className="aspect-[3/2] w-full flex">
-                                <div className={`h-full w-1/3 ${t.colors[0]}`} />
-                                <div className={`h-full w-1/3 ${t.colors[1]}`} />
-                                <div className={`h-full w-1/3 ${t.colors[2]}`} />
-                            </div>
-                            <div className="p-3 bg-card/90 backdrop-blur-sm border-t">
-                                <div className="flex items-center justify-between">
-                                    <span className="font-medium text-sm">{t.name}</span>
-                                    {theme === t.id && <Check className="h-4 w-4 text-primary" />}
+                    {themes.map((t) => {
+                        const isActive = mounted && theme === t.id;
+                        return (
+                            <div
+                                key={t.id}
+                                className={`cursor-pointer group relative rounded-xl border-2 transition-all duration-300 overflow-hidden ${isActive ? "border-primary ring-2 ring-primary/20 scale-[1.02]" : "border-transparent hover:border-primary/50"
+                                    }`}
+                                onClick={() => setTheme(t.id)}
+                            >
+                                <div className="aspect-[3/2] w-full flex">
+                                    <div className={`h-full w-1/3 ${t.colors[0]}`} />
+                                    <div className={`h-full w-1/3 ${t.colors[1]}`} />
+                                    <div className={`h-full w-1/3 ${t.colors[2]}`} />
+                                </div>
+                                <div className="p-3 bg-card/90 backdrop-blur-sm border-t">
+                                    <div className="flex items-center justify-between">
+                                        <span className="font-medium text-sm">{t.name}</span>
+                                        {isActive && <Check className="h-4 w-4 text-primary" />}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    ))}
+                        )
+                    })}
                 </div>
             </div>
         </div>

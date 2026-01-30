@@ -10,15 +10,33 @@ export interface Profile {
     department?: string
     joining_date?: string
     status?: "active" | "inactive"
+    current_assessment_score?: number
+    module_name?: string
+    total_average_current_year?: number
+    assessment_date?: string
+    mobile?: string
+    avgScore?: number
 }
 
 export interface Student {
     id: string
-    full_name: string
-    admission_number: string
-    grade_level: string
+    name: string
+    class: string
     section: string
-    age_group: string // 'age_3_6' | 'age_6_10' | 'age_11_16'
-    parent_name: string
-    created_at?: string
+    gender: string
+    fatherName: string
+    motherName: string
+    mobile: string
+    vidyaPulseScore: number
+}
+
+export interface Parent {
+    id: string
+    name: string
+    studentName: string
+    class: string
+    section: string
+    gender: string
+    mobile: string
+    parentPulseScore: number
 }

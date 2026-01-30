@@ -17,6 +17,11 @@ import {
 
 // Mock trend data for overall Teacher Pulse
 const teacherTrendData = [
+    { name: 'Feb', score: 72 },
+    { name: 'Mar', score: 75 },
+    { name: 'Apr', score: 74 },
+    { name: 'May', score: 76 },
+    { name: 'Jun', score: 78 },
     { name: 'Jul', score: 78 },
     { name: 'Aug', score: 80 },
     { name: 'Sep', score: 79 },
@@ -72,22 +77,34 @@ export default function EvaluationsPage() {
                             </CardTitle>
                             <CardDescription>Average performance across all departments</CardDescription>
                         </div>
-                        <div className="text-right">
+                        <div className="text-right animate-heartbeat">
                             <span className="text-4xl font-extrabold text-primary">{totalAvg}%</span>
                             <p className="text-[10px] text-muted-foreground uppercase font-bold tracking-wider">Historical Avg</p>
                         </div>
                     </CardHeader>
                     <CardContent className="p-0 h-[150px]">
                         <ResponsiveContainer width="100%" height="100%">
-                            <AreaChart data={teacherTrendData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                            <AreaChart data={teacherTrendData} margin={{ top: 10, right: 30, left: 0, bottom: 20 }}>
                                 <defs>
                                     <linearGradient id="colorPulse" x1="0" y1="0" x2="0" y2="1">
                                         <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.2} />
                                         <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
                                     </linearGradient>
                                 </defs>
-                                <XAxis dataKey="name" hide />
-                                <YAxis domain={[60, 100]} hide />
+                                <XAxis
+                                    dataKey="name"
+                                    axisLine={false}
+                                    tickLine={false}
+                                    tick={{ fontSize: 10, fill: 'var(--muted-foreground)' }}
+                                    dy={10}
+                                />
+                                <YAxis
+                                    domain={[0, 100]}
+                                    axisLine={false}
+                                    tickLine={false}
+                                    tick={{ fontSize: 10, fill: 'var(--muted-foreground)' }}
+                                    tickFormatter={(value) => `${value}%`}
+                                />
                                 <Tooltip content={({ active, payload }) => active && payload ? <div className="bg-background border p-1 rounded text-xs">{payload[0].value}%</div> : null} />
                                 <Area type="monotone" dataKey="score" stroke="hsl(var(--primary))" strokeWidth={3} fillOpacity={1} fill="url(#colorPulse)" />
                             </AreaChart>
@@ -104,7 +121,7 @@ export default function EvaluationsPage() {
                         </CardTitle>
                         <CardDescription>Academic Year 2024-25</CardDescription>
                     </CardHeader>
-                    <CardContent className="space-y-4">
+                    <CardContent className="space-y-4 animate-heartbeat">
                         <div className="flex justify-between items-baseline">
                             <div className="text-3xl font-black">{completedAssessments} <span className="text-lg text-muted-foreground font-medium">/ {totalPossibleAssessments}</span></div>
                             <div className="text-sm font-bold text-blue-500">{progressPercent}%</div>
@@ -180,7 +197,7 @@ function DeptWidget({ title, sub, score, icon, color }: { title: string, sub: st
                 </div>
                 <CardDescription className="text-[10px] uppercase font-bold text-muted-foreground">{sub}</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="animate-heartbeat">
                 <div className="text-3xl font-black">{score}%</div>
                 <div className="mt-2 h-1 w-full bg-muted rounded-full overflow-hidden">
                     <div className="h-full bg-current opacity-30 group-hover:opacity-60 transition-opacity" style={{ width: `${score}%` }} />

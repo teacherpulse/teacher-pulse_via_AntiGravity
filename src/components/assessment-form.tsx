@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ASSESSMENT_PERIODS, LEADERSHIP_PERIODS, MODULES, RubricScore, RubricCriterion, commonScores, ModuleDefinition } from "@/lib/rubrics"
+import { ASSESSMENT_PERIODS, LEADERSHIP_PERIODS, MODULES, RubricScore, RubricCriterion, commonScores, ModuleDefinition, CTM_PRE_PRIMARY_MODULE, CTM_FOUNDATIONAL_PRIMARY_MODULE, LTO_PRE_PRIMARY_MODULE, LTO_FOUNDATIONAL_AND_PRIMARY_MODULE, LTO_HIGH_SCHOOL_MODULE, PIE_PRE_PRIMARY_AND_FOUNDATIONAL_MODULE, PIE_PRIMARY_AND_HIGH_SCHOOL_MODULE } from "@/lib/rubrics"
 import { Profile } from "@/types"
 import { useState } from "react"
 import { CheckCircle2, ChevronLeft, Plus } from "lucide-react"
@@ -25,7 +25,7 @@ interface AssessmentFormProps {
     modules?: ModuleDefinition[]
 }
 
-export default function AssessmentForm({ teachers, defaultModule, lockModule = false, allowCustomCriteria = true, showClassDetails = true, modules = MODULES }: AssessmentFormProps) {
+export default function AssessmentForm({ teachers, defaultModule, lockModule = false, allowCustomCriteria = false, showClassDetails = true, modules = MODULES }: AssessmentFormProps) {
     const router = useRouter()
 
     // Form State
@@ -63,7 +63,36 @@ export default function AssessmentForm({ teachers, defaultModule, lockModule = f
     const [auditObservation, setAuditObservation] = useState("")
     const [auditData, setAuditData] = useState("")
 
-    const selectedModule = modules.find(m => m.id === selectedModuleId)
+    // Logic to switch CTM module for Pre Primary
+    let selectedModule = modules.find(m => m.id === selectedModuleId)
+
+    if (selectedModuleId === 'module_classroom_teaching_mastery' && selectedDepartment === 'Pre Primary') {
+        selectedModule = CTM_PRE_PRIMARY_MODULE
+    }
+
+    if (selectedModuleId === 'module_classroom_teaching_mastery' && selectedDepartment === 'Foundational Primary (Grade 1 & 2)') {
+        selectedModule = CTM_FOUNDATIONAL_PRIMARY_MODULE
+    }
+
+    if (selectedModuleId === 'module_learning_tools_optimization' && selectedDepartment === 'Pre Primary') {
+        selectedModule = LTO_PRE_PRIMARY_MODULE
+    }
+
+    if (selectedModuleId === 'module_learning_tools_optimization' && (selectedDepartment === 'Foundational Primary (Grade 1 & 2)' || selectedDepartment === 'Primary (Grade 3 to 5)')) {
+        selectedModule = LTO_FOUNDATIONAL_AND_PRIMARY_MODULE
+    }
+
+    if (selectedModuleId === 'module_learning_tools_optimization' && selectedDepartment === 'High School (Grade 6 to 10)') {
+        selectedModule = LTO_HIGH_SCHOOL_MODULE
+    }
+
+    if (selectedModuleId === 'module_professional_integrity_excellence' && (selectedDepartment === 'Pre Primary' || selectedDepartment === 'Foundational Primary (Grade 1 & 2)')) {
+        selectedModule = PIE_PRE_PRIMARY_AND_FOUNDATIONAL_MODULE
+    }
+
+    if (selectedModuleId === 'module_professional_integrity_excellence' && (selectedDepartment === 'Primary (Grade 3 to 5)' || selectedDepartment === 'High School (Grade 6 to 10)')) {
+        selectedModule = PIE_PRIMARY_AND_HIGH_SCHOOL_MODULE
+    }
 
     // Combine static and custom criteria
     const allCriteria = selectedModule ? [...selectedModule.criteria, ...customCriteria] : []

@@ -21,17 +21,8 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, TooltipProps } from 'recharts';
-
-// --- Types ---
-interface Teacher {
-    id: string; name: string; role: string; designation: string; department: string; email: string; mobile: string; avgScore: number;
-}
-interface Student {
-    id: string; name: string; class: string; section: string; gender: string; fatherName: string; motherName: string; mobile: string; vidyaPulseScore: number;
-}
-interface Parent {
-    id: string; name: string; studentName: string; class: string; section: string; gender: string; mobile: string; parentPulseScore: number;
-}
+import { DataTable } from "@/components/data-table"
+import { teacherColumns, studentColumns, parentColumns } from "./columns"
 
 // --- Mock Data Generators ---
 import { teacherData, studentData, parentData } from "@/lib/mock-data"
@@ -88,7 +79,7 @@ function DirectoryWidgets({ stats, chartData, attentionList, type }: { stats: an
                         <CardTitle className="text-sm font-medium">Total {type}</CardTitle>
                         <Users className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="animate-heartbeat">
                         <div className="text-2xl font-bold">{stats.total}</div>
                         <p className="text-xs text-muted-foreground">Registered in directory</p>
                     </CardContent>
@@ -98,7 +89,7 @@ function DirectoryWidgets({ stats, chartData, attentionList, type }: { stats: an
                         <CardTitle className="text-sm font-medium">Active vs Total</CardTitle>
                         <TrendingUp className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="animate-heartbeat">
                         <div className="text-2xl font-bold">{stats.active} <span className="text-muted-foreground text-sm font-normal">/ {stats.total}</span></div>
                         <p className="text-xs text-muted-foreground">Currently active users</p>
                     </CardContent>
@@ -108,7 +99,7 @@ function DirectoryWidgets({ stats, chartData, attentionList, type }: { stats: an
                         <CardTitle className="text-sm font-medium">Average % of {type}</CardTitle>
                         <Users className="h-4 w-4 text-muted-foreground" />
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="animate-heartbeat">
                         <div className="text-2xl font-bold text-primary">{stats.avg}%</div>
                         <p className="text-xs text-muted-foreground">Directory-wide average</p>
                     </CardContent>
@@ -279,69 +270,7 @@ export default function StakeholdersPage() {
                             </Button>
                         </CardHeader>
                         <CardContent>
-                            <Table>
-                                <TableHeader>
-                                    <TableRow className="hover:bg-transparent">
-                                        <TableHead className="w-[50px]">S.No.</TableHead>
-                                        <TableHead>Teacher Name</TableHead>
-                                        <TableHead>Designation/Role</TableHead>
-                                        <TableHead>Department</TableHead>
-                                        <TableHead>Email ID</TableHead>
-                                        <TableHead>Mobile Number</TableHead>
-                                        <TableHead>Average %</TableHead>
-                                        <TableHead className="text-right">Action</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {teacherData.map((teacher, index) => (
-                                        <TableRow key={teacher.id} className="group hover:bg-muted/50 transition-colors">
-                                            <TableCell>{index + 1}</TableCell>
-                                            <TableCell className="font-medium text-primary">
-                                                <Link href={`/dashboard/teachers/${teacher.id}`} className="hover:underline">
-                                                    {teacher.name}
-                                                </Link>
-                                            </TableCell>
-                                            <TableCell>
-                                                <div className="flex flex-col">
-                                                    <span>{teacher.designation}</span>
-                                                    <span className="text-xs text-muted-foreground">{teacher.role}</span>
-                                                </div>
-                                            </TableCell>
-                                            <TableCell>{teacher.department}</TableCell>
-                                            <TableCell>{teacher.email}</TableCell>
-                                            <TableCell>{teacher.mobile}</TableCell>
-                                            <TableCell>
-                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/10 text-primary">
-                                                    {teacher.avgScore}%
-                                                </span>
-                                            </TableCell>
-                                            <TableCell className="text-right">
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger asChild>
-                                                        <Button variant="ghost" size="icon" className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                            <span className="sr-only">Open menu</span>
-                                                            <MoreHorizontal className="h-4 w-4" />
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent align="end">
-                                                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                                        <DropdownMenuItem asChild>
-                                                            <Link href="/dashboard/leadership">Leadership Pulse</Link>
-                                                        </DropdownMenuItem>
-                                                        <DropdownMenuItem asChild>
-                                                            <Link href="/dashboard/evaluations">Teacher Pulse</Link>
-                                                        </DropdownMenuItem>
-                                                        <DropdownMenuItem asChild>
-                                                            <Link href={`/dashboard/teachers/${teacher.id}`}>View Profile</Link>
-                                                        </DropdownMenuItem>
-                                                        <DropdownMenuItem>Edit Profile</DropdownMenuItem>
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
+                            <DataTable columns={teacherColumns} data={teacherData} />
                         </CardContent>
                     </Card>
                 </TabsContent>
@@ -361,65 +290,7 @@ export default function StakeholdersPage() {
                             </Button>
                         </CardHeader>
                         <CardContent>
-                            <Table>
-                                <TableHeader>
-                                    <TableRow className="hover:bg-transparent">
-                                        <TableHead className="w-[50px]">S.No.</TableHead>
-                                        <TableHead>Student Name</TableHead>
-                                        <TableHead>Class</TableHead>
-                                        <TableHead>Section</TableHead>
-                                        <TableHead>Gender</TableHead>
-                                        <TableHead>Father Name</TableHead>
-                                        <TableHead>Mother Name</TableHead>
-                                        <TableHead>Mobile Number</TableHead>
-                                        <TableHead>Vidya Pulse %</TableHead>
-                                        <TableHead className="text-right">Action</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {studentData.map((student, index) => (
-                                        <TableRow key={student.id} className="group hover:bg-muted/50 transition-colors">
-                                            <TableCell>{index + 1}</TableCell>
-                                            <TableCell className="font-medium text-primary">
-                                                <Link href={`/dashboard/students/${student.id}`} className="hover:underline">
-                                                    {student.name}
-                                                </Link>
-                                            </TableCell>
-                                            <TableCell>{student.class}</TableCell>
-                                            <TableCell>{student.section}</TableCell>
-                                            <TableCell>{student.gender}</TableCell>
-                                            <TableCell>{student.fatherName}</TableCell>
-                                            <TableCell>{student.motherName}</TableCell>
-                                            <TableCell>{student.mobile}</TableCell>
-                                            <TableCell>
-                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
-                                                    {student.vidyaPulseScore}%
-                                                </span>
-                                            </TableCell>
-                                            <TableCell className="text-right">
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger asChild>
-                                                        <Button variant="ghost" size="icon" className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                            <MoreHorizontal className="h-4 w-4" />
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent align="end">
-                                                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                                        <DropdownMenuItem asChild>
-                                                            <Link href="/dashboard/students">Vidya Pulse</Link>
-                                                        </DropdownMenuItem>
-                                                        <DropdownMenuItem asChild>
-                                                            <Link href={`/dashboard/students/${student.id}`}>View Profile</Link>
-                                                        </DropdownMenuItem>
-                                                        <DropdownMenuItem>Edit Profile</DropdownMenuItem>
-                                                        <DropdownMenuItem>Academic Record</DropdownMenuItem>
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
+                            <DataTable columns={studentColumns} data={studentData} />
                         </CardContent>
                     </Card>
                 </TabsContent>
@@ -439,64 +310,7 @@ export default function StakeholdersPage() {
                             </Button>
                         </CardHeader>
                         <CardContent>
-                            <Table>
-                                <TableHeader>
-                                    <TableRow className="hover:bg-transparent">
-                                        <TableHead className="w-[50px]">S.No.</TableHead>
-                                        <TableHead>Parent Name</TableHead>
-                                        <TableHead>Student Name</TableHead>
-                                        <TableHead>Class</TableHead>
-                                        <TableHead>Section</TableHead>
-                                        <TableHead>Parent Gender</TableHead>
-                                        <TableHead>Mobile Number</TableHead>
-                                        <TableHead>Parent Pulse %</TableHead>
-                                        <TableHead className="text-right">Action</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {parentData.map((parent, index) => (
-                                        <TableRow key={parent.id} className="group hover:bg-muted/50 transition-colors">
-                                            <TableCell>{index + 1}</TableCell>
-                                            <TableCell className="font-medium text-primary">
-                                                <Link href={`/dashboard/parents/${parent.id}`} className="hover:underline">
-                                                    {parent.name}
-                                                </Link>
-                                            </TableCell>
-                                            <TableCell>{parent.studentName}</TableCell>
-                                            <TableCell>{parent.class}</TableCell>
-                                            <TableCell>{parent.section}</TableCell>
-                                            <TableCell>{parent.gender}</TableCell>
-                                            <TableCell>{parent.mobile}</TableCell>
-                                            <TableCell>
-                                                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-500/10 text-purple-600 dark:text-purple-400">
-                                                    {parent.parentPulseScore}%
-                                                </span>
-                                            </TableCell>
-                                            <TableCell className="text-right">
-                                                <DropdownMenu>
-                                                    <DropdownMenuTrigger asChild>
-                                                        <Button variant="ghost" size="icon" className="h-8 w-8 p-0 opacity-0 group-hover:opacity-100 transition-opacity">
-                                                            <MoreHorizontal className="h-4 w-4" />
-                                                        </Button>
-                                                    </DropdownMenuTrigger>
-                                                    <DropdownMenuContent align="end">
-                                                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                                                        <DropdownMenuItem asChild>
-                                                            <Link href="/dashboard/parent-pulse">Parent Pulse</Link>
-                                                        </DropdownMenuItem>
-                                                        <DropdownMenuItem asChild>
-                                                            <Link href={`/dashboard/parents/${parent.id}`}>View Profile</Link>
-                                                        </DropdownMenuItem>
-                                                        <DropdownMenuItem>Edit Profile</DropdownMenuItem>
-                                                        <DropdownMenuItem>Contact</DropdownMenuItem>
-                                                        <DropdownMenuItem>Feedback History</DropdownMenuItem>
-                                                    </DropdownMenuContent>
-                                                </DropdownMenu>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
+                            <DataTable columns={parentColumns} data={parentData} />
                         </CardContent>
                     </Card>
                 </TabsContent>

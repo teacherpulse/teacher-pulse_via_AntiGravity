@@ -13,7 +13,7 @@ export default function ParentPulsePage() {
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Feedback Received</CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="animate-heartbeat">
                         <div className="text-2xl font-bold">--</div>
                         <p className="text-xs text-muted-foreground">Past 30 days</p>
                     </CardContent>
@@ -22,7 +22,7 @@ export default function ParentPulsePage() {
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Pending Actions</CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="animate-heartbeat">
                         <div className="text-2xl font-bold">--</div>
                         <p className="text-xs text-muted-foreground">Requires attention</p>
                     </CardContent>
@@ -31,7 +31,7 @@ export default function ParentPulsePage() {
                     <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                         <CardTitle className="text-sm font-medium">Engagement Score</CardTitle>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="animate-heartbeat">
                         <div className="text-2xl font-bold">--</div>
                         <p className="text-xs text-muted-foreground">Average rating</p>
                     </CardContent>
