@@ -33,7 +33,7 @@ const getScores = (overrides?: Partial<RubricScore>[]): RubricScore[] => {
 
 export const MODULES: ModuleDefinition[] = [
     {
-        id: "classroom_teaching_mastery",
+        id: "module_classroom_teaching_mastery",
         title: "Classroom Teaching Mastery",
         criteria: [
             {
@@ -58,15 +58,123 @@ export const MODULES: ModuleDefinition[] = [
         ]
     },
     {
-        id: "correction_quality_index",
+        id: "module_correction_quality_index",
         title: "Correction Quality Index",
         criteria: [
-            { id: "timeliness", title: "Timeliness of Corrections", scores: getScores() },
-            { id: "feedback_quality", title: "Quality of Feedback", scores: getScores() },
+            {
+                id: "regularity_timeliness",
+                title: "Regularity & Timeliness",
+                scores: getScores([
+                    { description: "Corrections pending >1 week. Backlog visible." },
+                    { description: "Corrections often 3-4 days late. Inconsistent frequency." },
+                    { description: "Corrections done within 24-48 hours. No major backlog." },
+                    { description: "Corrections done same-day or next-day consistently." },
+                    { description: "Immediate feedback loop. Returned before next topic." }
+                ])
+            },
+            {
+                id: "completeness",
+                title: "Completeness",
+                scores: getScores([
+                    { description: "Skipped exercises/pages. Index not checked." },
+                    { description: "Some pages missed. Index incomplete." },
+                    { description: "All exercises checked. Index signed." },
+                    { description: "Thorough check including rough work/diagrams." },
+                    { description: "Every single entry verified. 100% coverage." }
+                ])
+            },
+            {
+                id: "accuracy_checking",
+                title: "Accuracy of Checking",
+                scores: getScores([
+                    { description: "Blind Ticking. Mistakes marked as correct." },
+                    { description: "Major errors caught, minor missed." },
+                    { description: "Accurate checking. Most mistakes identified." },
+                    { description: "High accuracy. Spelling/grammar also marked." },
+                    { description: "Forensic accuracy. All errors coded correctly." }
+                ])
+            },
+            {
+                id: "feedback_quality",
+                title: "Feedback Quality",
+                scores: getScores([
+                    { description: "No remarks. Only signature." },
+                    { description: 'Generic remarks ("Good", "Write neatly").' },
+                    { description: 'Specific remarks ("Check spelling").' },
+                    { description: 'Constructive feedback ("Review Step 2").' },
+                    { description: "Actionable, personalized feedback." }
+                ])
+            },
+            {
+                id: "signature_date",
+                title: "Signature & Date",
+                scores: getScores([
+                    { description: "Missing signatures or dates." },
+                    { description: "Signed but date missing/illegible." },
+                    { description: "Signed and dated consistently." },
+                    { description: "Signed, dated, uses correct ink color." },
+                    { description: "Professional signature/date on every assignment." }
+                ])
+            },
+            {
+                id: "presentation_neatness",
+                title: "Presentation/Neatness",
+                scores: getScores([
+                    { description: "Books torn, no covers, scribble work." },
+                    { description: "Books covered but messy inside." },
+                    { description: "Books decent. Legible. Margins drawn." },
+                    { description: "High standards of neatness. Index maintained." },
+                    { description: "Pristine books. Model of discipline." }
+                ])
+            },
+            {
+                id: "homework_quality",
+                title: "Homework Quality",
+                scores: getScores([
+                    { description: "Irrelevant/Too much HW. No tracking." },
+                    { description: "HW given but tracking is weak." },
+                    { description: "Relevant HW. Defaulters list maintained." },
+                    { description: "Creative HW. Defaulters followed up next day." },
+                    { description: "Purposeful HW. Defaulters parents called immediately." }
+                ])
+            },
+            {
+                id: "support_weak_students",
+                title: "Support to Weak Students",
+                scores: getScores([
+                    { description: "No special attention in books." },
+                    { description: "Same correction for all." },
+                    { description: "Re-correction done for major errors." },
+                    { description: "Detailed clues for weak learners." },
+                    { description: "Re-teaching via notebook comments." }
+                ])
+            },
+            {
+                id: "marking_standards",
+                title: "Marking Standards",
+                scores: getScores([
+                    { description: "Confusing symbols. Wrong ink color." },
+                    { description: "Inconsistent symbols used." },
+                    { description: "Standard ticks/crosses. Red ink used." },
+                    { description: "Follows school code (Circle=Spelling etc)." },
+                    { description: "Strict adherence to marking key." }
+                ])
+            },
+            {
+                id: "accountability",
+                title: "Accountability",
+                scores: getScores([
+                    { description: "Books lost. No record of submission." },
+                    { description: "Loose record keeping." },
+                    { description: 'Checklist of "Submitted" maintained.' },
+                    { description: "Detailed tracker (Late/Corrected/Returned)." },
+                    { description: "Full audit trail. Zero loss." }
+                ])
+            }
         ]
     },
     {
-        id: "learning_tools_optimization",
+        id: "module_learning_tools_optimization",
         title: "Learning Tools Optimization",
         criteria: [
             { id: "usage_freq", title: "Frequency of Usage", scores: getScores() },
@@ -74,7 +182,7 @@ export const MODULES: ModuleDefinition[] = [
         ]
     },
     {
-        id: "professional_integrity",
+        id: "module_professional_integrity_excellence",
         title: "Professional Integrity & Excellence",
         criteria: [
             { id: "punctuality", title: "Punctuality", scores: getScores() },

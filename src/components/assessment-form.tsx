@@ -37,8 +37,26 @@ export default function AssessmentForm({ teachers, defaultModule, lockModule = f
     const [notes, setNotes] = useState<string>("")
     const [scores, setScores] = useState<Record<string, number>>({})
     const [customCriteria, setCustomCriteria] = useState<RubricCriterion[]>([])
-    const [isAddingCriterion, setIsAddingCriterion] = useState(false)
     const [newCriterionTitle, setNewCriterionTitle] = useState("")
+    const [isAddingCriterion, setIsAddingCriterion] = useState(false)
+
+    const [selectedDepartment, setSelectedDepartment] = useState<string>("all")
+
+    // Derived Lists
+    const departments = [
+        "Pre Primary",
+        "Foundational Primary (Grade 1 & 2)",
+        "Primary (Grade 3 to 5)",
+        "High School (Grade 6 to 10)"
+    ]
+
+    const filteredTeachers = teachers.filter(t => {
+        if (selectedDepartment === "all") return t.department !== "Management"
+        if (selectedDepartment === "Foundational Primary (Grade 1 & 2)") {
+            return t.department === "Foundational Primary" || t.department === "Grade 1 & 2"
+        }
+        return t.department === selectedDepartment
+    })
 
     // ALMF Specific State
     const [auditErrorCatch, setAuditErrorCatch] = useState("")
@@ -163,13 +181,28 @@ export default function AssessmentForm({ teachers, defaultModule, lockModule = f
                             <h2 className="text-lg font-semibold">Assessment Details</h2>
 
                             <div className="space-y-2">
+                                <Label>Select Department</Label>
+                                <Select onValueChange={setSelectedDepartment} value={selectedDepartment}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder="Filter by department" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="all">All Departments</SelectItem>
+                                        {departments.map(dept => (
+                                            <SelectItem key={dept} value={dept}>{dept}</SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
+                            <div className="space-y-2">
                                 <Label>{selectedModuleId === 'almf' ? "Select HOD *" : "Select Teacher *"}</Label>
                                 <Select onValueChange={setSelectedTeacherId} value={selectedTeacherId}>
                                     <SelectTrigger>
                                         <SelectValue placeholder={selectedModuleId === 'almf' ? "Choose an HOD" : "Choose a teacher"} />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        {teachers.map(t => (
+                                        {filteredTeachers.map(t => (
                                             <SelectItem key={t.id} value={t.id}>{t.full_name}</SelectItem>
                                         ))}
                                     </SelectContent>

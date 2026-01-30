@@ -6,6 +6,6 @@ export const dynamic = 'force-dynamic'
 
 export default function NewEvaluationPage() {
     return (
-        <AssessmentForm teachers={teacherData as any} />
+        <AssessmentForm teachers={teacherData as any} allowCustomCriteria={false} />
     )
 }
