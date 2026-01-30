@@ -1,5 +1,6 @@
-import AssessmentForm from "@/components/assessment-form"
+import { ALMF_MODULE } from "@/lib/rubrics"
 import { teacherData } from "@/lib/mock-data"
+import AssessmentForm from "@/components/assessment-form"
 
 // @ts-ignore
 export const dynamic = 'force-dynamic'
@@ -19,6 +20,7 @@ export default function NewLeadershipEvaluationPage() {
             lockModule={true}
             allowCustomCriteria={false}
             showClassDetails={false}
+            modules={[ALMF_MODULE]}
         />
     )
 }

@@ -6,7 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Textarea } from "@/components/ui/textarea"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ASSESSMENT_PERIODS, LEADERSHIP_PERIODS, MODULES, RubricScore, RubricCriterion, commonScores } from "@/lib/rubrics"
+import { ASSESSMENT_PERIODS, LEADERSHIP_PERIODS, MODULES, RubricScore, RubricCriterion, commonScores, ModuleDefinition } from "@/lib/rubrics"
 import { Profile } from "@/types"
 import { useState } from "react"
 import { CheckCircle2, ChevronLeft, Plus } from "lucide-react"
@@ -22,9 +22,10 @@ interface AssessmentFormProps {
     lockModule?: boolean
     allowCustomCriteria?: boolean
     showClassDetails?: boolean
+    modules?: ModuleDefinition[]
 }
 
-export default function AssessmentForm({ teachers, defaultModule, lockModule = false, allowCustomCriteria = true, showClassDetails = true }: AssessmentFormProps) {
+export default function AssessmentForm({ teachers, defaultModule, lockModule = false, allowCustomCriteria = true, showClassDetails = true, modules = MODULES }: AssessmentFormProps) {
     const router = useRouter()
 
     // Form State
@@ -44,7 +45,7 @@ export default function AssessmentForm({ teachers, defaultModule, lockModule = f
     const [auditObservation, setAuditObservation] = useState("")
     const [auditData, setAuditData] = useState("")
 
-    const selectedModule = MODULES.find(m => m.id === selectedModuleId)
+    const selectedModule = modules.find(m => m.id === selectedModuleId)
 
     // Combine static and custom criteria
     const allCriteria = selectedModule ? [...selectedModule.criteria, ...customCriteria] : []
@@ -223,7 +224,7 @@ export default function AssessmentForm({ teachers, defaultModule, lockModule = f
                                                 <SelectValue placeholder="Choose a module" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                {MODULES.map(m => (
+                                                {modules.map(m => (
                                                     <SelectItem key={m.id} value={m.id}>{m.title}</SelectItem>
                                                 ))}
                                             </SelectContent>

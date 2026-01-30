@@ -10,7 +10,6 @@ const MODULES = [
     { id: 'module_correction_quality_index', name: 'Correction Quality Index (CQI)', color: 'bg-green-100 text-green-800' },
     { id: 'module_learning_tools_optimization', name: 'Learning Tools Optimization (LTO)', color: 'bg-purple-100 text-purple-800' },
     { id: 'module_professional_integrity_excellence', name: 'Professional Integrity & Excellence (PIE)', color: 'bg-orange-100 text-orange-800' },
-    { id: 'module_almf', name: 'Academic Leadership Mastery Framework (HODs)', color: 'bg-indigo-100 text-indigo-800' },
 ]
 
 export default function SelectModule({ teacher }: { teacher: Profile }) {

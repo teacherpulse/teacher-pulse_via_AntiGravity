@@ -80,69 +80,70 @@ export const MODULES: ModuleDefinition[] = [
             { id: "punctuality", title: "Punctuality", scores: getScores() },
             { id: "collaboration", title: "Collaboration with Peers", scores: getScores() },
         ]
-    },
-    {
-        id: "almf",
-        title: "ALMF (Leadership Pulse)",
-        criteria: [
-            {
-                id: "instructional_supervision",
-                title: "Instructional Supervision (IS)",
-                scores: getScores([
-                    { description: "Absentee Leader: Rarely observes classes. Feedback is vague. No follow-up on previous errors." },
-                    { description: "Passive Observer: Observes required classes but misses root causes. Feedback is descriptive rather than prescriptive." },
-                    { description: "Corrective Supervisor (SOP): Meets observation targets. Identifies HTMF deviations correctly. Ensures Lesson Plans are on time." },
-                    { description: "Developmental Mentor: Demonstrates techniques inside the teacher's class (Model Teaching). Tracks teacher improvement and identifies pedagocial gaps." },
-                    { description: "Transformational Leader: Uses video analysis for feedback. Teachers under this HOD consistently improve pedagogy. Innovation is high." }
-                ])
-            },
-            {
-                id: "operational_rigor",
-                title: "Operational Rigor (OR)",
-                scores: getScores([
-                    { description: "Negligent: 'Blind Ticking' of Teacher Diaries and Correction samples. Misses syllabus lags. Timetable conflicts." },
-                    { description: "Inconsistent: Checks for completion, not quality. Catches 50% of correction errors. Syllabus tracking is reactive." },
-                    { description: "Accurate Auditor (SOP): 100% detection of 'Blind Ticking'. Diaries checked weekly with meaningful remarks. Syllabus on schedule." },
-                    { description: "System Optimizer: Proactively adjusts timetables. Ensures 'Zero Loss' of student notebooks. Audits are forensic and detailed." },
-                    { description: "Standard Setter: Creates high-quality resource banks that other departments copy. Zero operational errors for the term." }
-                ])
-            },
-            {
-                id: "data_driven_strategy",
-                title: "Data-Driven Strategy (DDS)",
-                scores: getScores([
-                    { description: "Data Avoider: Blames students/parents for low results. Does not know the 'Fail List' of their department." },
-                    { description: "Data Reporter: Compiles marks sheets but offers no analysis. Conducts remedials without a specific plan." },
-                    { description: "Analyst (SOP): Identifies 'At-Risk' students immediately after exams. Ensures remedials happen. Knows Department Average." },
-                    { description: "Strategist: Groups students by specific learning gaps. Adjusts teaching plans based on weekly test data. Predicts board results with 90% accuracy." },
-                    { description: "Result Architect: Achieves consistent Department Averages >85%. Eliminates failure through 'Micro-Interventions'." }
-                ])
-            },
-            {
-                id: "team_culture_integrity",
-                title: "Team Culture & Integrity (TCI)",
-                scores: getScores([
-                    { description: "Divider: Complains about management to teachers. Engaging in gossip. Fails to enforce school policies." },
-                    { description: "People Pleaser: Avoids difficult conversations with underperforming teachers. 'Protects' team from accountability." },
-                    { description: "Professional Anchor (SOP): Enforces policies neutrally. Conducts meetings with clear agenda. Respectful and punctual." },
-                    { description: "Culture Builder: De-escalates staff conflicts without Principal intervention. Motivates team during high-pressure periods." },
-                    { description: "Institutional Pillar: Fully embodies the Principal's vision. Mentors new HODs. Integrity is beyond reproach." }
-                ])
-            },
-            {
-                id: "hod_audit_log",
-                title: "HOD Audit Log (Primary Tool)",
-                scores: getScores([
-                    { description: "Ineffective: Audit Log is empty or vague. No error catches, observations are generic, and no data trends identified." },
-                    { description: "Developing: Log has entries but lacks 'Forensic Accuracy'. Feedback is descriptive. Misses syllabus tracking or root causes." },
-                    { description: "Proficient (SOP): Log contains logical Error Catches and accurate observation remarks. Syllabus exactly on schedule." },
-                    { description: "Strategist: Forensic and detailed audits. Proactively adjusts teaching plans based on weekly test data in the log." },
-                    { description: "Multiplier: Zero operational errors. Log creates high-quality resource banks and eliminates failure through micro-interventions." }
-                ])
-            }
-        ]
     }
 ]
+
+export const ALMF_MODULE: ModuleDefinition = {
+    id: "almf",
+    title: "ALMF (Leadership Pulse)",
+    criteria: [
+        {
+            id: "instructional_supervision",
+            title: "Instructional Supervision (IS)",
+            scores: getScores([
+                { description: "Absentee Leader: Rarely observes classes. Feedback is vague. No follow-up on previous errors." },
+                { description: "Passive Observer: Observes required classes but misses root causes. Feedback is descriptive rather than prescriptive." },
+                { description: "Corrective Supervisor (SOP): Meets observation targets. Identifies HTMF deviations correctly. Ensures Lesson Plans are on time." },
+                { description: "Developmental Mentor: Demonstrates techniques inside the teacher's class (Model Teaching). Tracks teacher improvement and identifies pedagocial gaps." },
+                { description: "Transformational Leader: Uses video analysis for feedback. Teachers under this HOD consistently improve pedagogy. Innovation is high." }
+            ])
+        },
+        {
+            id: "operational_rigor",
+            title: "Operational Rigor (OR)",
+            scores: getScores([
+                { description: "Negligent: 'Blind Ticking' of Teacher Diaries and Correction samples. Misses syllabus lags. Timetable conflicts." },
+                { description: "Inconsistent: Checks for completion, not quality. Catches 50% of correction errors. Syllabus tracking is reactive." },
+                { description: "Accurate Auditor (SOP): 100% detection of 'Blind Ticking'. Diaries checked weekly with meaningful remarks. Syllabus on schedule." },
+                { description: "System Optimizer: Proactively adjusts timetables. Ensures 'Zero Loss' of student notebooks. Audits are forensic and detailed." },
+                { description: "Standard Setter: Creates high-quality resource banks that other departments copy. Zero operational errors for the term." }
+            ])
+        },
+        {
+            id: "data_driven_strategy",
+            title: "Data-Driven Strategy (DDS)",
+            scores: getScores([
+                { description: "Data Avoider: Blames students/parents for low results. Does not know the 'Fail List' of their department." },
+                { description: "Data Reporter: Compiles marks sheets but offers no analysis. Conducts remedials without a specific plan." },
+                { description: "Analyst (SOP): Identifies 'At-Risk' students immediately after exams. Ensures remedials happen. Knows Department Average." },
+                { description: "Strategist: Groups students by specific learning gaps. Adjusts teaching plans based on weekly test data. Predicts board results with 90% accuracy." },
+                { description: "Result Architect: Achieves consistent Department Averages >85%. Eliminates failure through 'Micro-Interventions'." }
+            ])
+        },
+        {
+            id: "team_culture_integrity",
+            title: "Team Culture & Integrity (TCI)",
+            scores: getScores([
+                { description: "Divider: Complains about management to teachers. Engaging in gossip. Fails to enforce school policies." },
+                { description: "People Pleaser: Avoids difficult conversations with underperforming teachers. 'Protects' team from accountability." },
+                { description: "Professional Anchor (SOP): Enforces policies neutrally. Conducts meetings with clear agenda. Respectful and punctual." },
+                { description: "Culture Builder: De-escalates staff conflicts without Principal intervention. Motivates team during high-pressure periods." },
+                { description: "Institutional Pillar: Fully embodies the Principal's vision. Mentors new HODs. Integrity is beyond reproach." }
+            ])
+        },
+        {
+            id: "hod_audit_log",
+            title: "HOD Audit Log (Primary Tool)",
+            scores: getScores([
+                { description: "Ineffective: Audit Log is empty or vague. No error catches, observations are generic, and no data trends identified." },
+                { description: "Developing: Log has entries but lacks 'Forensic Accuracy'. Feedback is descriptive. Misses syllabus tracking or root causes." },
+                { description: "Proficient (SOP): Log contains logical Error Catches and accurate observation remarks. Syllabus exactly on schedule." },
+                { description: "Strategist: Forensic and detailed audits. Proactively adjusts teaching plans based on weekly test data in the log." },
+                { description: "Multiplier: Zero operational errors. Log creates high-quality resource banks and eliminates failure through micro-interventions." }
+            ])
+        }
+    ]
+}
 
 export const ASSESSMENT_PERIODS = [
     "1 of 6 (July)",
