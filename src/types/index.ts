@@ -16,18 +16,27 @@ export interface Profile {
     assessment_date?: string
     mobile?: string
     avgScore?: number
+    gender?: string
 }
 
 export interface Student {
     id: string
-    name: string
-    class: string
+    full_name: string // changed from name to match DB
+    admission_number: string
+    grade_level: string // changed from class to match DB
     section: string
-    gender: string
-    fatherName: string
-    motherName: string
-    mobile: string
-    vidyaPulseScore: number
+    age_group?: string
+    gender?: string
+    fatherName?: string // Keeping for backward compat if needed, but primary is parent_name
+    motherName?: string
+    mobile?: string
+    vidyaPulseScore?: number
+    // New fields
+    parent_name?: string
+    parent_contact_number?: string
+    locality?: string
+    parent_work?: string
+    parent_gender?: string
 }
 
 export interface Parent {

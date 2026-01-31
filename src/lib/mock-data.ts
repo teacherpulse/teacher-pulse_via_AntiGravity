@@ -38,8 +38,8 @@ export const teacherData = [
 ]
 
 export const studentData = [
-    { id: "1", name: "Arjun Singh", class: "10", section: "A", gender: "Male", fatherName: "Raj Singh", motherName: "Priya Singh", mobile: "9876543212", vidyaPulseScore: 85 },
-    { id: "2", name: "Ananya Gupta", class: "9", section: "B", gender: "Female", fatherName: "Amit Gupta", motherName: "Neha Gupta", mobile: "9876543213", vidyaPulseScore: 90 },
+    { id: "1", full_name: "Arjun Singh", admission_number: "ADM001", grade_level: "10", section: "A", gender: "Male", fatherName: "Raj Singh", motherName: "Priya Singh", mobile: "9876543212", vidyaPulseScore: 85, age_group: "age_11_16", parent_name: "Raj Singh", parent_contact_number: "9876543212", locality: "Urban", parent_work: "Business" },
+    { id: "2", full_name: "Ananya Gupta", admission_number: "ADM002", grade_level: "9", section: "B", gender: "Female", fatherName: "Amit Gupta", motherName: "Neha Gupta", mobile: "9876543213", vidyaPulseScore: 90, age_group: "age_11_16", parent_name: "Amit Gupta", parent_contact_number: "9876543213", locality: "Urban", parent_work: "Engineer" },
 ]
 
 export const parentData = [

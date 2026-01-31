@@ -226,7 +226,7 @@ export const studentColumns: ColumnDef<Student>[] = [
         cell: ({ row }) => <div className="text-center font-mono font-medium text-muted-foreground">{row.index + 1}</div>,
     },
     {
-        accessorKey: "name",
+        accessorKey: "full_name",
         header: ({ column }) => (
             <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} className="h-auto whitespace-normal text-left font-bold text-muted-foreground/70">
                 Student Name
@@ -234,28 +234,28 @@ export const studentColumns: ColumnDef<Student>[] = [
             </Button>
         ),
         cell: ({ row }) => {
-            const initials = row.original.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
+            const initials = row.original.full_name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)
             return (
                 <div className="flex items-center gap-3">
                     <Avatar className="h-9 w-9 border-2 border-primary/10 shadow-sm hover:scale-105 transition-transform">
                         <AvatarFallback className="bg-blue-50 text-blue-600 font-bold">{initials}</AvatarFallback>
                     </Avatar>
                     <Link href={`/dashboard/students/${row.original.id}`} className="font-semibold text-foreground hover:underline hover:text-primary transition-colors">
-                        {row.getValue("name")}
+                        {row.getValue("full_name")}
                     </Link>
                 </div>
             )
         },
     },
     {
-        accessorKey: "class",
+        accessorKey: "grade_level",
         header: ({ column }) => (
             <Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === "asc")} className="h-auto whitespace-normal w-full justify-center text-center font-bold text-muted-foreground/70">
                 Class
                 <ArrowUpDown className="ml-2 h-4 w-4" />
             </Button>
         ),
-        cell: ({ row }) => <div className="text-center font-medium">{row.getValue("class")}</div>,
+        cell: ({ row }) => <div className="text-center font-medium">{row.getValue("grade_level")}</div>,
     },
     {
         accessorKey: "section",

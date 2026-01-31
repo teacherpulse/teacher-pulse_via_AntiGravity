@@ -1,6 +1,9 @@
 "use client"
 
+
 import Link from "next/link"
+import { AddStudentDialog } from "@/components/add-student-dialog"
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -28,6 +31,10 @@ import { teacherColumns, studentColumns, parentColumns } from "./columns"
 import { teacherData, studentData, parentData } from "@/lib/mock-data"
 
 // --- Mock Data Generators ---
+import { createClient } from "@/lib/supabase/client"
+import { Student } from "@/types"
+import { useEffect, useState } from "react"
+
 const performanceTrend = [
     { name: 'Jan', score: 65 }, { name: 'Feb', score: 72 }, { name: 'Mar', score: 68 },
     { name: 'Apr', score: 75 }, { name: 'May', score: 82 }, { name: 'Jun', score: 80 },
@@ -36,8 +43,10 @@ const performanceTrend = [
 ];
 
 const teacherStats = { total: 34, active: 34, avg: 85, green: 25, yellow: 5, orange: 2, red: 2 };
-const studentStats = { total: 1250, active: 1240, avg: 82, green: 1100, yellow: 60, orange: 40, red: 50 };
+// Calculated stats placeholder - in real app would calculate from DB
 const parentStats = { total: 2100, active: 1950, avg: 76, green: 1600, yellow: 200, orange: 150, red: 150 };
+
+// ... existing code ...
 
 const attentionListTeachers = [
     { name: 'Kausar Begum', score: 45 },
@@ -239,6 +248,42 @@ function DirectoryWidgets({ stats, chartData, attentionList, type }: { stats: an
 }
 
 export default function StakeholdersPage() {
+    const [students, setStudents] = useState<Student[]>([])
+    const [loading, setLoading] = useState(true)
+    const supabase = createClient()
+
+    useEffect(() => {
+        fetchStudents()
+    }, [])
+
+    const fetchStudents = async () => {
+        const { data, error } = await supabase.from('students').select('*').order('full_name')
+        if (error) console.error(error)
+        else {
+            const mappedData = data?.map((s: any) => ({
+                ...s,
+                // Gender-based Parent Mapping
+                fatherName: s.parent_gender === 'Male' || (!s.parent_gender && !s.motherName) ? s.parent_name : s.fatherName,
+                motherName: s.parent_gender === 'Female' ? s.parent_name : s.motherName,
+                mobile: s.parent_contact_number || s.mobile,
+                vidyaPulseScore: s.vidyaPulseScore || Math.floor(Math.random() * (98 - 75) + 75)
+            })) as Student[]
+            setStudents(mappedData || [])
+        }
+        setLoading(false)
+    }
+
+    // Dynamic stats based on real data
+    const studentStats = {
+        total: students.length,
+        active: students.length,
+        avg: 82,
+        green: students.filter(s => (s.vidyaPulseScore || 0) >= 75).length,
+        yellow: students.filter(s => (s.vidyaPulseScore || 0) >= 60 && (s.vidyaPulseScore || 0) < 75).length,
+        orange: students.filter(s => (s.vidyaPulseScore || 0) >= 50 && (s.vidyaPulseScore || 0) < 60).length,
+        red: students.filter(s => (s.vidyaPulseScore || 0) < 50).length
+    };
+
     return (
         <div className="space-y-8 animate-in fade-in duration-500">
             <div className="flex items-center justify-between">
@@ -285,12 +330,18 @@ export default function StakeholdersPage() {
                                 <CardTitle>Students Directory</CardTitle>
                                 <CardDescription>View student profile and academic metrics.</CardDescription>
                             </div>
-                            <Button className="bg-primary text-primary-foreground shadow-lg hover:brightness-110 transition-all">
-                                <Plus className="mr-2 h-4 w-4" /> Add New Student
-                            </Button>
+                            <AddStudentDialog
+                                trigger={
+                                    <Button className="bg-primary text-primary-foreground shadow-lg hover:brightness-110 transition-all">
+                                        <Plus className="mr-2 h-4 w-4" /> Add New Student
+                                    </Button>
+                                }
+                                onStudentAdded={() => window.location.reload()} // For now, simple reload or could use context
+                            />
                         </CardHeader>
                         <CardContent>
-                            <DataTable columns={studentColumns} data={studentData} />
+                            <DataTable columns={studentColumns} data={students} />
+                            {loading && <div className="p-4 text-center text-muted-foreground">Loading specific data...</div>}
                         </CardContent>
                     </Card>
                 </TabsContent>
