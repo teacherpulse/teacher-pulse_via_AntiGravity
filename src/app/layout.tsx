@@ -5,6 +5,9 @@ import { ThemeProvider } from "@/components/theme-provider";
 import NeuralBackground from "@/components/neural-background";
 import ThemeBackground from "@/components/theme-background";
 
+import { FeaturesProvider } from "@/components/features-provider";
+import { FeaturesEffect } from "@/components/features-effect";
+
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -36,9 +39,12 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <ThemeBackground />
-          <NeuralBackground />
-          {children}
+          <FeaturesProvider>
+            <FeaturesEffect />
+            <ThemeBackground />
+            <NeuralBackground />
+            {children}
+          </FeaturesProvider>
         </ThemeProvider>
       </body>
     </html>

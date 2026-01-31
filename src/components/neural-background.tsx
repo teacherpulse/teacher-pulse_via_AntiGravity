@@ -1,11 +1,15 @@
 "use client"
 
-import React, { useEffect, useRef } from 'react'
+import { useRef, useEffect, useState, useMemo } from 'react'
+import { useFeatures } from './features-provider'
 
-const NeuralBackground: React.FC = () => {
+const NeuralBackground = () => {
     const canvasRef = useRef<HTMLCanvasElement>(null)
+    const { neuralNetworksEnabled } = useFeatures()
 
     useEffect(() => {
+        if (!neuralNetworksEnabled) return
+
         const canvas = canvasRef.current
         if (!canvas) return
 
@@ -32,10 +36,10 @@ const NeuralBackground: React.FC = () => {
         const particles: Particle[] = []
         const particleCount = 140 // Slightly more
         const connectionDistance = 180 // Sharper connections
-        const speedScale = 0.60 // Increased by 50% for more energy
+        const speedScale = 0.045 // Increased by 20% from 0.0375
         const attractionRadius = 250
         const attractionForce = 0.015 // Maintain subtle feel
-        const redistributionForce = 0.0002 // Keep as subtle bias
+        const redistributionForce = 0.00005 // Maintain free movement fluidity
 
         // Metallic & AI Palette
         const metalColors = [
@@ -92,15 +96,15 @@ const NeuralBackground: React.FC = () => {
                 }
 
                 // 2. Continuous "Wander" force to keep them moving
-                this.vx += (Math.random() - 0.5) * 0.02
-                this.vy += (Math.random() - 0.5) * 0.02
+                this.vx += (Math.random() - 0.5) * 0.0015
+                this.vy += (Math.random() - 0.5) * 0.0015
 
-                // 3. Home Bias: Extremely subtle pull to keep even distribution
-                // This is the "redistribution" logic that won't kill the movement
+                // 3. Home Bias: Drastically reduced to let them move freely
+                // Only a tiny nudge to keep them from all clumping in one corner over time
                 const hx = this.baseX - this.x
                 const hy = this.baseY - this.y
-                this.vx += hx * 0.0002
-                this.vy += hy * 0.0002
+                this.vx += hx * redistributionForce
+                this.vy += hy * redistributionForce
 
                 // 4. Energy Maintenance: Gently push speed toward speedScale
                 // This prevents them from "sticking" or stopping
@@ -161,6 +165,8 @@ const NeuralBackground: React.FC = () => {
             }
         }
 
+        let animationFrameId: number
+
         const animate = () => {
             if (!ctx) return
             ctx.clearRect(0, 0, width, height)
@@ -178,15 +184,35 @@ const NeuralBackground: React.FC = () => {
                     if (distance < connectionDistance) {
                         const shiftFactor = Math.sin(particles[i].connectionSeed + j) * 0.5 + 0.5
                         if (shiftFactor > 0.3) {
-                            ctx.beginPath()
-                            ctx.strokeStyle = particles[i].isMetallic || particles[j].isMetallic ? '#C0C0C0' : particles[i].color
-
                             const alpha = (1 - (distance / connectionDistance)) * shiftFactor * 0.9
-                            ctx.globalAlpha = alpha
-                            ctx.lineWidth = 1 // Ultra sharp standard width
+                            const color = particles[i].isMetallic || particles[j].isMetallic ? '#C0C0C0' : particles[i].color
+
+                            // Base Pass with Glow
+                            ctx.beginPath()
+                            ctx.strokeStyle = color
+                            ctx.globalAlpha = alpha * 0.6 // Slightly softer base
+                            ctx.lineWidth = 1.2
+
+                            // Shiny Bloom effect
+                            ctx.shadowBlur = 4
+                            ctx.shadowColor = color
+
                             ctx.moveTo(particles[i].x, particles[i].y)
                             ctx.lineTo(particles[j].x, particles[j].y)
                             ctx.stroke()
+
+                            // Glossy Highlight Pass
+                            // This draws a thinner, much brighter line on top for the "gloss"
+                            ctx.beginPath()
+                            ctx.shadowBlur = 0 // No blur for sharpness
+                            ctx.globalAlpha = alpha * 1.0 // Full brightness for highlight
+                            ctx.lineWidth = 0.5
+                            ctx.strokeStyle = '#FFFFFF' // Pure white highlight for universal visibility
+                            ctx.moveTo(particles[i].x, particles[i].y)
+                            ctx.lineTo(particles[j].x, particles[j].y)
+                            ctx.stroke()
+
+                            // Reset for next
                             ctx.globalAlpha = 1
                             connectionCount++
                         }
@@ -194,7 +220,7 @@ const NeuralBackground: React.FC = () => {
                     if (connectionCount > 4) break
                 }
             }
-            requestAnimationFrame(animate)
+            animationFrameId = requestAnimationFrame(animate)
         }
 
         const handleMouseMove = (e: MouseEvent) => {
@@ -215,17 +241,21 @@ const NeuralBackground: React.FC = () => {
         return () => {
             window.removeEventListener('mousemove', handleMouseMove)
             window.removeEventListener('resize', handleResize)
+            cancelAnimationFrame(animationFrameId)
         }
-    }, [])
+    }, [neuralNetworksEnabled])
+
+    if (!neuralNetworksEnabled) return null
 
     return (
         <canvas
             ref={canvasRef}
-            className="fixed inset-0 pointer-events-none"
+            className="fixed inset-0 pointer-events-none z-[-1]"
             style={{
                 background: 'transparent',
                 zIndex: -5, // Stay behind UI
-                animation: 'neural-pulse 12s ease-in-out infinite'
+                animation: 'neural-pulse 12s ease-in-out infinite',
+                filter: 'blur(0.5px)'
             }}
         />
     )
