@@ -18,14 +18,17 @@ export default function LoginPage() {
 
     async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
+        console.log("Submitting login form...")
         setIsLoading(true)
 
         const formData = new FormData(event.currentTarget)
         const email = formData.get("email") as string
         const password = formData.get("password") as string
+        console.log("Creds:", email)
 
         try {
             if (isSignUp) {
+                console.log("Attempting Sign Up...")
                 const { error } = await supabase.auth.signUp({
                     email,
                     password,
@@ -33,16 +36,25 @@ export default function LoginPage() {
                         emailRedirectTo: `${location.origin}/auth/callback`,
                     },
                 })
-                if (error) throw error
+                if (error) {
+                    console.error("Sign Up Error:", error)
+                    throw error
+                }
+                console.log("Sign Up Success")
                 toast.success("Account created!", {
                     description: "Please check your email to verify your account.",
                 })
             } else {
+                console.log("Attempting Login...")
                 const { error } = await supabase.auth.signInWithPassword({
                     email,
                     password,
                 })
-                if (error) throw error
+                if (error) {
+                    console.error("Login Error:", error)
+                    throw error
+                }
+                console.log("Login Success")
                 router.refresh()
                 router.push("/dashboard")
             }

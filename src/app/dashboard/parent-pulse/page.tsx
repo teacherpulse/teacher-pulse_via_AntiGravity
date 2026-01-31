@@ -3,7 +3,8 @@
 import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Users, UserX } from "lucide-react"
+import { Users, UserX, Plus } from "lucide-react"
+import Link from "next/link"
 
 export default function ParentPulsePage() {
     const [viewStatus, setViewStatus] = useState<"active" | "inactive">("active")
@@ -16,6 +17,12 @@ export default function ParentPulsePage() {
                     <p className="text-muted-foreground">Parental engagement tracking and feedback analysis.</p>
                 </div>
                 <div className="flex items-center gap-2">
+                    <Link href="/dashboard/parent-pulse/assess">
+                        <Button className="h-8 gap-2 bg-primary text-primary-foreground shadow-sm hover:bg-primary/90">
+                            <Plus className="h-4 w-4" /> Assess Parent
+                        </Button>
+                    </Link>
+                    <div className="h-8 w-px bg-border mx-1" />
                     <Button
                         variant={viewStatus === 'active' ? "secondary" : "ghost"}
                         size="sm"

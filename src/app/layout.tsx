@@ -1,9 +1,11 @@
+
 import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import NeuralBackground from "@/components/neural-background";
 import ThemeBackground from "@/components/theme-background";
+import { Toaster } from "@/components/ui/sonner";
 
 import { FeaturesProvider } from "@/components/features-provider";
 import { FeaturesEffect } from "@/components/features-effect";
@@ -44,6 +46,7 @@ export default function RootLayout({
             <ThemeBackground />
             <NeuralBackground />
             {children}
+            <Toaster />
           </FeaturesProvider>
         </ThemeProvider>
       </body>

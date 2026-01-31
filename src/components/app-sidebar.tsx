@@ -82,27 +82,13 @@ export function AppSidebar({ userRole = 'teacher', ...props }: AppSidebarProps) 
     const handleSignOut = async () => {
         await supabase.auth.signOut()
         router.refresh()
+        router.push('/login')
     }
 
     const navItems = [...data.navMain]
 
     return (
         <Sidebar collapsible="icon" className="border-r-0 bg-background/20 backdrop-blur-2xl shadow-xl" {...props}>
-            <SidebarHeader className="pb-6 pt-4">
-                <SidebarMenu>
-                    <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground hover:bg-transparent">
-                            <div className="flex aspect-square size-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-amber-600 text-white shadow-lg shadow-primary/30">
-                                <GraduationCap className="size-6" />
-                            </div>
-                            <div className="grid flex-1 text-left leading-tight">
-                                <span className="truncate font-bold tracking-wide text-lg text-primary">Teacher Pulse</span>
-                                <span className="truncate text-xs font-medium text-muted-foreground uppercase tracking-widest">Nalanda High</span>
-                            </div>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
-                </SidebarMenu>
-            </SidebarHeader>
             <SidebarContent className="px-2">
                 <SidebarMenu className="gap-2">
                     {navItems.map((item) => (
