@@ -37,6 +37,7 @@ export interface Student {
     locality?: string
     parent_work?: string
     parent_gender?: string
+    status?: "active" | "inactive"
 }
 
 export interface Parent {
@@ -48,4 +49,5 @@ export interface Parent {
     gender: string
     mobile: string
     parentPulseScore: number
+    status?: "active" | "inactive"
 }

@@ -1,8 +1,9 @@
 "use client"
 
+import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Plus, ListChecks, Target, TrendingUp, Users } from "lucide-react"
+import { Plus, ListChecks, Target, TrendingUp, Users, UserX } from "lucide-react"
 import Link from "next/link"
 import { teacherData } from "@/lib/mock-data"
 import { AreaChart, Area, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts"
@@ -19,13 +20,23 @@ const mockTrends = [
 ]
 
 export default function LeadershipPage() {
-    const hods = teacherData.filter(t =>
+    const [viewStatus, setViewStatus] = useState<"active" | "inactive">("active")
+
+    const allHods = teacherData.filter(t =>
         t.role === 'HOD' ||
         t.designation.includes('Principal') ||
         t.designation.includes('HOD')
     )
 
-    const overallAvg = Math.round(hods.reduce((acc, curr) => acc + curr.avgScore, 0) / hods.length)
+    // Filter HODs based on viewStatus
+    // Mock data doesn't have status, so all are active by default.
+    const filteredHods = allHods.filter((t: any) =>
+        viewStatus === 'active' ? (t.status !== 'inactive') : (t.status === 'inactive')
+    )
+
+    const overallAvg = filteredHods.length > 0
+        ? Math.round(filteredHods.reduce((acc, curr) => acc + curr.avgScore, 0) / filteredHods.length)
+        : 0
 
     return (
         <div className="space-y-8 animate-in fade-in duration-500">
@@ -45,28 +56,50 @@ export default function LeadershipPage() {
                     </div>
                 </div>
 
-                {/* Directory-style Navigation */}
-                <div className="flex p-1 bg-muted/40 backdrop-blur-sm border border-border/50 rounded-lg w-fit">
-                    <Link href="/dashboard/leadership/assessments" className="block">
+                <div className="flex flex-col md:flex-row gap-4 items-start md:items-center">
+                    {/* Directory-style Navigation */}
+                    <div className="flex p-1 bg-muted/40 backdrop-blur-sm border border-border/50 rounded-lg w-fit">
+                        <Link href="/dashboard/leadership/assessments" className="block">
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="rounded-md px-4 py-2 h-9 text-sm font-medium hover:bg-background/50"
+                            >
+                                <ListChecks className="mr-2 h-4 w-4 text-primary" />
+                                HODs Assessments
+                            </Button>
+                        </Link>
+                        <Link href="/dashboard/leadership/plans" className="block">
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="rounded-md px-4 py-2 h-9 text-sm font-medium hover:bg-background/50"
+                            >
+                                <Target className="mr-2 h-4 w-4 text-amber-500" />
+                                Plan of Action
+                            </Button>
+                        </Link>
+                    </div>
+
+                    {/* Active/Inactive Toggle */}
+                    <div className="flex p-1 bg-muted/40 backdrop-blur-sm border border-border/50 rounded-lg w-fit ml-auto">
                         <Button
-                            variant="ghost"
+                            variant={viewStatus === 'active' ? "secondary" : "ghost"}
                             size="sm"
-                            className="rounded-md px-4 py-2 h-9 text-sm font-medium hover:bg-background/50"
+                            onClick={() => setViewStatus('active')}
+                            className="rounded-md px-3 py-2 h-9 text-xs font-medium"
                         >
-                            <ListChecks className="mr-2 h-4 w-4 text-primary" />
-                            HODs Assessments
+                            Active HODs
                         </Button>
-                    </Link>
-                    <Link href="/dashboard/leadership/plans" className="block">
                         <Button
-                            variant="ghost"
+                            variant={viewStatus === 'inactive' ? "secondary" : "ghost"}
                             size="sm"
-                            className="rounded-md px-4 py-2 h-9 text-sm font-medium hover:bg-background/50"
+                            onClick={() => setViewStatus('inactive')}
+                            className="rounded-md px-3 py-2 h-9 text-xs font-medium text-muted-foreground"
                         >
-                            <Target className="mr-2 h-4 w-4 text-amber-500" />
-                            Plan of Action
+                            Inactive HODs
                         </Button>
-                    </Link>
+                    </div>
                 </div>
             </div>
 
@@ -78,7 +111,7 @@ export default function LeadershipPage() {
                             <TrendingUp className="h-4 w-4 text-primary" />
                             Overall Leadership Performance
                         </CardTitle>
-                        <CardDescription>Aggregate Average of All HODs</CardDescription>
+                        <CardDescription>Aggregate Average of All {viewStatus === 'active' ? 'Active' : 'Inactive'} HODs</CardDescription>
                     </CardHeader>
                     <CardContent className="animate-heartbeat">
                         <div className="flex items-baseline gap-2">
@@ -94,8 +127,8 @@ export default function LeadershipPage() {
                     </CardHeader>
                     <CardContent className="animate-heartbeat">
                         <div className="text-2xl font-bold flex items-center gap-2">
-                            <Users className="h-5 w-5 text-muted-foreground" />
-                            {hods.length}
+                            {viewStatus === 'active' ? <Users className="h-5 w-5 text-muted-foreground" /> : <UserX className="h-5 w-5 text-muted-foreground" />}
+                            {filteredHods.length}
                         </div>
                     </CardContent>
                 </Card>
@@ -103,73 +136,80 @@ export default function LeadershipPage() {
 
             {/* Individual HOD Grid */}
             <div className="space-y-4">
-                <h2 className="text-xl font-bold font-heading px-1">HOD Performance Tracking</h2>
-                <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {hods.map((hod) => (
-                        <Card key={hod.id} className="glass-card hover:shadow-2xl transition-all duration-300 group overflow-hidden">
-                            <CardHeader className="pb-2">
-                                <div className="flex justify-between items-start">
-                                    <div>
-                                        <CardTitle className="text-base group-hover:text-primary transition-colors">{hod.full_name}</CardTitle>
-                                        <CardDescription className="text-xs line-clamp-1">{hod.department}</CardDescription>
+                <h2 className="text-xl font-bold font-heading px-1">
+                    {viewStatus === 'active' ? 'HOD Performance Tracking' : 'Inactive HODs Archive'}
+                </h2>
+                {filteredHods.length === 0 ? (
+                    <div className="p-12 text-center border-2 border-dashed rounded-xl bg-muted/20">
+                        <div className="text-muted-foreground">No {viewStatus} HODs found.</div>
+                    </div>
+                ) : (
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                        {filteredHods.map((hod) => (
+                            <Card key={hod.id} className="glass-card hover:shadow-2xl transition-all duration-300 group overflow-hidden">
+                                <CardHeader className="pb-2">
+                                    <div className="flex justify-between items-start">
+                                        <div>
+                                            <CardTitle className="text-base group-hover:text-primary transition-colors">{hod.full_name}</CardTitle>
+                                            <CardDescription className="text-xs line-clamp-1">{hod.department}</CardDescription>
+                                        </div>
+                                        <div className="text-right animate-heartbeat">
+                                            <div className="text-xl font-bold text-primary">{hod.avgScore}%</div>
+                                            <div className="text-[10px] text-muted-foreground">Avg Score</div>
+                                        </div>
                                     </div>
-                                    <div className="text-right animate-heartbeat">
-                                        <div className="text-xl font-bold text-primary">{hod.avgScore}%</div>
-                                        <div className="text-[10px] text-muted-foreground">Avg Score</div>
+                                </CardHeader>
+                                <CardContent className="px-2 pt-2 pb-1">
+                                    <div className="h-[140px] w-full">
+                                        <ResponsiveContainer width="100%" height="100%">
+                                            <AreaChart data={mockTrends} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
+                                                <defs>
+                                                    <linearGradient id={`colorScore-${hod.id}`} x1="0" y1="0" x2="0" y2="1">
+                                                        <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.2} />
+                                                        <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
+                                                    </linearGradient>
+                                                </defs>
+                                                <XAxis
+                                                    dataKey="name"
+                                                    axisLine={false}
+                                                    tickLine={false}
+                                                    tick={{ fontSize: 9, fill: 'var(--muted-foreground)' }}
+                                                />
+                                                <YAxis
+                                                    domain={[0, 100]}
+                                                    axisLine={false}
+                                                    tickLine={false}
+                                                    tick={{ fontSize: 9, fill: 'var(--muted-foreground)' }}
+                                                />
+                                                <Tooltip
+                                                    content={({ active, payload }) => {
+                                                        if (active && payload && payload.length) {
+                                                            return (
+                                                                <div className="bg-background/90 border p-1 rounded-md text-[10px] shadow-sm">
+                                                                    {payload[0].value}%
+                                                                </div>
+                                                            );
+                                                        }
+                                                        return null;
+                                                    }}
+                                                />
+                                                <Area
+                                                    type="monotone"
+                                                    dataKey="score"
+                                                    stroke="hsl(var(--primary))"
+                                                    strokeWidth={2}
+                                                    fillOpacity={1}
+                                                    fill={`url(#colorScore-${hod.id})`}
+                                                />
+                                            </AreaChart>
+                                        </ResponsiveContainer>
                                     </div>
-                                </div>
-                            </CardHeader>
-                            <CardContent className="px-2 pt-2 pb-1">
-                                <div className="h-[140px] w-full">
-                                    <ResponsiveContainer width="100%" height="100%">
-                                        <AreaChart data={mockTrends} margin={{ top: 5, right: 5, left: -20, bottom: 0 }}>
-                                            <defs>
-                                                <linearGradient id={`colorScore-${hod.id}`} x1="0" y1="0" x2="0" y2="1">
-                                                    <stop offset="5%" stopColor="hsl(var(--primary))" stopOpacity={0.2} />
-                                                    <stop offset="95%" stopColor="hsl(var(--primary))" stopOpacity={0} />
-                                                </linearGradient>
-                                            </defs>
-                                            <XAxis
-                                                dataKey="name"
-                                                axisLine={false}
-                                                tickLine={false}
-                                                tick={{ fontSize: 9, fill: 'var(--muted-foreground)' }}
-                                            />
-                                            <YAxis
-                                                domain={[0, 100]}
-                                                axisLine={false}
-                                                tickLine={false}
-                                                tick={{ fontSize: 9, fill: 'var(--muted-foreground)' }}
-                                            />
-                                            <Tooltip
-                                                content={({ active, payload }) => {
-                                                    if (active && payload && payload.length) {
-                                                        return (
-                                                            <div className="bg-background/90 border p-1 rounded-md text-[10px] shadow-sm">
-                                                                {payload[0].value}%
-                                                            </div>
-                                                        );
-                                                    }
-                                                    return null;
-                                                }}
-                                            />
-                                            <Area
-                                                type="monotone"
-                                                dataKey="score"
-                                                stroke="hsl(var(--primary))"
-                                                strokeWidth={2}
-                                                fillOpacity={1}
-                                                fill={`url(#colorScore-${hod.id})`}
-                                            />
-                                        </AreaChart>
-                                    </ResponsiveContainer>
-                                </div>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </div>
+                                </CardContent>
+                            </Card>
+                        ))}
+                    </div>
+                )}
             </div>
         </div>
     )
 }
-

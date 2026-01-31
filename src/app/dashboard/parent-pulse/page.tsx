@@ -1,11 +1,38 @@
+"use client"
+
+import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Users, UserX } from "lucide-react"
 
 export default function ParentPulsePage() {
+    const [viewStatus, setViewStatus] = useState<"active" | "inactive">("active")
+
     return (
         <div className="space-y-6">
-            <div>
-                <h1 className="text-3xl font-bold tracking-tight font-heading">Parent Pulse</h1>
-                <p className="text-muted-foreground">Parental engagement tracking and feedback analysis.</p>
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                    <h1 className="text-3xl font-bold tracking-tight font-heading">Parent Pulse</h1>
+                    <p className="text-muted-foreground">Parental engagement tracking and feedback analysis.</p>
+                </div>
+                <div className="flex items-center gap-2">
+                    <Button
+                        variant={viewStatus === 'active' ? "secondary" : "ghost"}
+                        size="sm"
+                        onClick={() => setViewStatus('active')}
+                        className="h-8 gap-2"
+                    >
+                        <Users className="h-4 w-4" /> Active Parents
+                    </Button>
+                    <Button
+                        variant={viewStatus === 'inactive' ? "secondary" : "ghost"}
+                        size="sm"
+                        onClick={() => setViewStatus('inactive')}
+                        className="h-8 gap-2 text-muted-foreground"
+                    >
+                        <UserX className="h-4 w-4" /> Inactive Parents
+                    </Button>
+                </div>
             </div>
 
             <div className="grid gap-4 md:grid-cols-3">
@@ -41,11 +68,14 @@ export default function ParentPulsePage() {
             {/* Placeholder for Data Table */}
             <Card>
                 <CardHeader>
-                    <CardTitle>Recent Feedback</CardTitle>
+                    <CardTitle>{viewStatus === 'active' ? 'Recent Feedback' : 'Archived Parent Records'}</CardTitle>
                 </CardHeader>
                 <CardContent>
                     <div className="h-24 flex items-center justify-center text-muted-foreground text-sm border border-dashed rounded-lg">
-                        No feedback records found.
+                        {viewStatus === 'active'
+                            ? "No feedback records found."
+                            : "No inactive parent records found."
+                        }
                     </div>
                 </CardContent>
             </Card>

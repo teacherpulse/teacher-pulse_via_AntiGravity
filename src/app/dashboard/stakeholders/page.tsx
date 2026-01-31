@@ -7,7 +7,7 @@ import { AddStudentDialog } from "@/components/add-student-dialog"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { MoreHorizontal, Plus, Users, TrendingUp, AlertCircle, CheckCircle2, XCircle } from "lucide-react"
+import { MoreHorizontal, Plus, Users, TrendingUp, AlertCircle, CheckCircle2, XCircle, UserX } from "lucide-react"
 import {
     Table,
     TableBody,
@@ -250,6 +250,9 @@ function DirectoryWidgets({ stats, chartData, attentionList, type }: { stats: an
 export default function StakeholdersPage() {
     const [students, setStudents] = useState<Student[]>([])
     const [loading, setLoading] = useState(true)
+    const [teacherStatus, setTeacherStatus] = useState<"active" | "inactive">("active")
+    const [studentStatus, setStudentStatus] = useState<"active" | "inactive">("active")
+    const [parentStatus, setParentStatus] = useState<"active" | "inactive">("active")
     const supabase = createClient()
 
     useEffect(() => {
@@ -266,7 +269,8 @@ export default function StakeholdersPage() {
                 fatherName: s.parent_gender === 'Male' || (!s.parent_gender && !s.motherName) ? s.parent_name : s.fatherName,
                 motherName: s.parent_gender === 'Female' ? s.parent_name : s.motherName,
                 mobile: s.parent_contact_number || s.mobile,
-                vidyaPulseScore: s.vidyaPulseScore || Math.floor(Math.random() * (98 - 75) + 75)
+                vidyaPulseScore: s.vidyaPulseScore || Math.floor(Math.random() * (98 - 75) + 75),
+                status: s.status || 'active'
             })) as Student[]
             setStudents(mappedData || [])
         }
@@ -283,6 +287,20 @@ export default function StakeholdersPage() {
         orange: students.filter(s => (s.vidyaPulseScore || 0) >= 50 && (s.vidyaPulseScore || 0) < 60).length,
         red: students.filter(s => (s.vidyaPulseScore || 0) < 50).length
     };
+
+    // Filters
+    const filteredTeachers = teacherData.filter((t: any) =>
+        teacherStatus === 'active' ? (t.status !== 'inactive') : (t.status === 'inactive')
+    )
+
+    // For students, use the 'status' field mapped from Supabase or default 'active'
+    const filteredStudents = students.filter(s =>
+        studentStatus === 'active' ? (s.status === 'active' || !s.status) : s.status === 'inactive'
+    )
+
+    const filteredParents = parentData.filter((p: any) =>
+        parentStatus === 'active' ? (p.status !== 'inactive') : (p.status === 'inactive')
+    )
 
     return (
         <div className="space-y-8 animate-in fade-in duration-500">
@@ -305,17 +323,35 @@ export default function StakeholdersPage() {
                     <DirectoryWidgets stats={teacherStats} chartData={performanceTrend} attentionList={attentionListTeachers} type="Teachers" />
 
                     <Card className="glass-card">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-6">
-                            <div className="space-y-1.5">
+                        <CardHeader className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 pb-6 gap-4">
+                            <div className="space-y-1.5 w-full sm:w-auto">
                                 <CardTitle>Teacher Directory</CardTitle>
                                 <CardDescription>View and manage all teacher details.</CardDescription>
                             </div>
-                            <Button className="bg-primary text-primary-foreground shadow-lg hover:brightness-110 transition-all">
-                                <Plus className="mr-2 h-4 w-4" /> Add New Teacher
-                            </Button>
+                            <div className="flex items-center gap-2 w-full sm:w-auto">
+                                <Button
+                                    variant={teacherStatus === 'active' ? "secondary" : "ghost"}
+                                    size="sm"
+                                    onClick={() => setTeacherStatus('active')}
+                                    className="h-9 gap-2"
+                                >
+                                    <Users className="h-4 w-4" /> Active
+                                </Button>
+                                <Button
+                                    variant={teacherStatus === 'inactive' ? "secondary" : "ghost"}
+                                    size="sm"
+                                    onClick={() => setTeacherStatus('inactive')}
+                                    className="h-9 gap-2 text-muted-foreground"
+                                >
+                                    <UserX className="h-4 w-4" /> Inactive
+                                </Button>
+                                <Button className="bg-primary text-primary-foreground shadow-lg hover:brightness-110 transition-all ml-2">
+                                    <Plus className="mr-2 h-4 w-4" /> Add New
+                                </Button>
+                            </div>
                         </CardHeader>
                         <CardContent>
-                            <DataTable columns={teacherColumns} data={teacherData} />
+                            <DataTable columns={teacherColumns} data={filteredTeachers} />
                         </CardContent>
                     </Card>
                 </TabsContent>
@@ -325,22 +361,40 @@ export default function StakeholdersPage() {
                     <DirectoryWidgets stats={studentStats} chartData={performanceTrend} attentionList={attentionListStudents} type="Students" />
 
                     <Card className="glass-card">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-6">
-                            <div className="space-y-1.5">
+                        <CardHeader className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 pb-6 gap-4">
+                            <div className="space-y-1.5 w-full sm:w-auto">
                                 <CardTitle>Students Directory</CardTitle>
                                 <CardDescription>View student profile and academic metrics.</CardDescription>
                             </div>
-                            <AddStudentDialog
-                                trigger={
-                                    <Button className="bg-primary text-primary-foreground shadow-lg hover:brightness-110 transition-all">
-                                        <Plus className="mr-2 h-4 w-4" /> Add New Student
-                                    </Button>
-                                }
-                                onStudentAdded={() => window.location.reload()} // For now, simple reload or could use context
-                            />
+                            <div className="flex items-center gap-2 w-full sm:w-auto">
+                                <Button
+                                    variant={studentStatus === 'active' ? "secondary" : "ghost"}
+                                    size="sm"
+                                    onClick={() => setStudentStatus('active')}
+                                    className="h-9 gap-2"
+                                >
+                                    <Users className="h-4 w-4" /> Active
+                                </Button>
+                                <Button
+                                    variant={studentStatus === 'inactive' ? "secondary" : "ghost"}
+                                    size="sm"
+                                    onClick={() => setStudentStatus('inactive')}
+                                    className="h-9 gap-2 text-muted-foreground"
+                                >
+                                    <UserX className="h-4 w-4" /> Inactive
+                                </Button>
+                                <AddStudentDialog
+                                    trigger={
+                                        <Button className="bg-primary text-primary-foreground shadow-lg hover:brightness-110 transition-all ml-2">
+                                            <Plus className="mr-2 h-4 w-4" /> Add New
+                                        </Button>
+                                    }
+                                    onStudentAdded={() => window.location.reload()}
+                                />
+                            </div>
                         </CardHeader>
                         <CardContent>
-                            <DataTable columns={studentColumns} data={students} />
+                            <DataTable columns={studentColumns} data={filteredStudents} />
                             {loading && <div className="p-4 text-center text-muted-foreground">Loading specific data...</div>}
                         </CardContent>
                     </Card>
@@ -351,17 +405,35 @@ export default function StakeholdersPage() {
                     <DirectoryWidgets stats={parentStats} chartData={performanceTrend} attentionList={attentionListParents} type="Parents" />
 
                     <Card className="glass-card">
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-6">
-                            <div className="space-y-1.5">
+                        <CardHeader className="flex flex-col sm:flex-row items-center justify-between space-y-4 sm:space-y-0 pb-6 gap-4">
+                            <div className="space-y-1.5 w-full sm:w-auto">
                                 <CardTitle>Parents Directory</CardTitle>
                                 <CardDescription>Connect with student guardians.</CardDescription>
                             </div>
-                            <Button className="bg-primary text-primary-foreground shadow-lg hover:brightness-110 transition-all">
-                                <Plus className="mr-2 h-4 w-4" /> Add New Parent
-                            </Button>
+                            <div className="flex items-center gap-2 w-full sm:w-auto">
+                                <Button
+                                    variant={parentStatus === 'active' ? "secondary" : "ghost"}
+                                    size="sm"
+                                    onClick={() => setParentStatus('active')}
+                                    className="h-9 gap-2"
+                                >
+                                    <Users className="h-4 w-4" /> Active
+                                </Button>
+                                <Button
+                                    variant={parentStatus === 'inactive' ? "secondary" : "ghost"}
+                                    size="sm"
+                                    onClick={() => setParentStatus('inactive')}
+                                    className="h-9 gap-2 text-muted-foreground"
+                                >
+                                    <UserX className="h-4 w-4" /> Inactive
+                                </Button>
+                                <Button className="bg-primary text-primary-foreground shadow-lg hover:brightness-110 transition-all ml-2">
+                                    <Plus className="mr-2 h-4 w-4" /> Add New
+                                </Button>
+                            </div>
                         </CardHeader>
                         <CardContent>
-                            <DataTable columns={parentColumns} data={parentData} />
+                            <DataTable columns={parentColumns} data={filteredParents} />
                         </CardContent>
                     </Card>
                 </TabsContent>
