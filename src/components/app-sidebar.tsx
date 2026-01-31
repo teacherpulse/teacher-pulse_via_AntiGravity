@@ -23,7 +23,7 @@ import {
     SidebarSeparator,
 } from "@/components/ui/sidebar"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { createClient } from "@/lib/supabase/client"
+
 import { useRouter } from "next/navigation"
 
 const data = {
@@ -77,10 +77,11 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
 
 export function AppSidebar({ userRole = 'teacher', ...props }: AppSidebarProps) {
     const router = useRouter()
-    const supabase = createClient()
+
 
     const handleSignOut = async () => {
-        await supabase.auth.signOut()
+        // MOCK SIGNOUT: Clear cookie
+        document.cookie = "mock_session=; path=/; max-age=0"
         router.refresh()
         router.push('/login')
     }

@@ -4,7 +4,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { createClient } from "@/lib/supabase/client"
 import { GraduationCap, Loader2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useState } from "react"
@@ -12,55 +11,38 @@ import { toast } from "sonner"
 
 export default function LoginPage() {
     const [isLoading, setIsLoading] = useState(false)
-    const [isSignUp, setIsSignUp] = useState(false)
     const router = useRouter()
-    const supabase = createClient()
 
     async function onSubmit(event: React.FormEvent<HTMLFormElement>) {
         event.preventDefault()
-        console.log("Submitting login form...")
         setIsLoading(true)
 
         const formData = new FormData(event.currentTarget)
-        const email = formData.get("email") as string
-        const password = formData.get("password") as string
-        console.log("Creds:", email)
+        const loginId = formData.get("loginId") as string
+
+        console.log("Mock Login Attempt:", loginId)
 
         try {
-            if (isSignUp) {
-                console.log("Attempting Sign Up...")
-                const { error } = await supabase.auth.signUp({
-                    email,
-                    password,
-                    options: {
-                        emailRedirectTo: `${location.origin}/auth/callback`,
-                    },
-                })
-                if (error) {
-                    console.error("Sign Up Error:", error)
-                    throw error
-                }
-                console.log("Sign Up Success")
-                toast.success("Account created!", {
-                    description: "Please check your email to verify your account.",
-                })
-            } else {
-                console.log("Attempting Login...")
-                const { error } = await supabase.auth.signInWithPassword({
-                    email,
-                    password,
-                })
-                if (error) {
-                    console.error("Login Error:", error)
-                    throw error
-                }
-                console.log("Login Success")
-                router.refresh()
-                router.push("/dashboard")
-            }
+            // SIMULATE SERVER DELAY
+            await new Promise(resolve => setTimeout(resolve, 800))
+
+            // MOCK LOGIN: Set cookie and redirect
+            // In a real app this would happen server-side, but for this mock we do it client-side
+            // or we could use a server action. For simplicity, we just set a document.cookie here
+            // because middleware reads it on next request.
+            document.cookie = `mock_session=${loginId}; path=/; max-age=86400; SameSite=Lax`
+
+            console.log("Mock Login Success")
+            toast.success("Welcome back!", {
+                description: "Logged in successfully.",
+            })
+
+            router.refresh()
+            router.push("/dashboard")
+
         } catch (error: any) {
             toast.error("Error", {
-                description: error.message,
+                description: "Something went wrong.",
             })
         } finally {
             setIsLoading(false)
@@ -78,32 +60,29 @@ export default function LoginPage() {
                     </div>
                     <CardTitle className="text-2xl">Teacher Pulse</CardTitle>
                     <CardDescription>
-                        {isSignUp ? "Create an account to get started" : "Login to access your dashboard"}
+                        Enter your mobile number to get started
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
                     <form onSubmit={onSubmit} className="space-y-4">
                         <div className="space-y-2">
-                            <Label htmlFor="email">Email</Label>
-                            <Input id="email" name="email" type="email" placeholder="m@example.com" required />
+                            <Label htmlFor="loginId">Mobile Number</Label>
+                            <Input
+                                id="loginId"
+                                name="loginId"
+                                type="text"
+                                placeholder="9876543210"
+                                required
+                            />
                         </div>
                         <div className="space-y-2">
-                            <Label htmlFor="password">Password</Label>
-                            <Input id="password" name="password" type="password" required />
+                            <Label htmlFor="password">Password (Optional)</Label>
+                            <Input id="password" name="password" type="password" placeholder="Any password works" />
                         </div>
                         <Button className="w-full" type="submit" disabled={isLoading}>
                             {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                            {isSignUp ? "Sign Up" : "Login"}
+                            Login
                         </Button>
-                        <div className="text-center text-sm">
-                            <button
-                                type="button"
-                                onClick={() => setIsSignUp(!isSignUp)}
-                                className="underline text-muted-foreground hover:text-primary"
-                            >
-                                {isSignUp ? "Already have an account? Login" : "Don't have an account? Sign Up"}
-                            </button>
-                        </div>
                     </form>
                 </CardContent>
             </Card>
