@@ -302,7 +302,11 @@ export default function StudentProfilePage() {
                                     Create Assessment
                                 </Button>
                             </Link>
-                            <Button className="w-full justify-start" variant="outline" disabled={isInactive} className={isInactive ? 'opacity-50' : ''}>
+                            <Button
+                                className={`w-full justify-start ${isInactive ? 'opacity-50' : ''}`}
+                                variant="outline"
+                                disabled={isInactive}
+                            >
                                 <BookOpen className="mr-2 h-4 w-4" />
                                 View Academic Reports
                             </Button>

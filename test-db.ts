@@ -12,7 +12,7 @@ const envVars = Object.fromEntries(
 )
 
 // Handle potential carriage returns or key/value spacing
-const clean = (val) => val ? val.trim() : ''
+const clean = (val: string | undefined): string => val ? val.trim() : ''
 
 const supabaseUrl = clean(envVars.NEXT_PUBLIC_SUPABASE_URL)
 const supabaseKey = clean(envVars.NEXT_PUBLIC_SUPABASE_ANON_KEY)

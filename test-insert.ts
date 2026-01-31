@@ -10,7 +10,7 @@ const envVars = Object.fromEntries(
         .filter(line => line && !line.startsWith('#'))
         .map(line => line.split('='))
 )
-const clean = (val) => val ? val.trim() : ''
+const clean = (val: string | undefined): string => val ? val.trim() : ''
 const supabase = createClient(clean(envVars.NEXT_PUBLIC_SUPABASE_URL), clean(envVars.NEXT_PUBLIC_SUPABASE_ANON_KEY))
 
 async function testInsert() {
